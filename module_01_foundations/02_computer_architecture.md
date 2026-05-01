@@ -1,119 +1,201 @@
-# Computer Architecture for Coders: How CPU and RAM Interact with Your Code
+# Computer Architecture for Coders: How CPU and RAM Work with Your Code
 
 ## Learning Objectives
 
-- Understand the basic relationship between CPU, RAM, and your code
-- Learn how data flows through a computer when code executes
-- See why understanding memory matters for programming
+By the end of this lesson, you will be able to:
+
+- Explain the basic relationship between the CPU and RAM
+- Understand how data flows through your computer when code runs
+- See why Python handles memory for you so you don't have to think about it
+
+---
+
+## Mental Model: The Office
+
+Imagine a busy office:
+
+- **CPU** is the worker — the one who actually does the tasks
+- **RAM** is the desk — where the worker keeps the things they're working on right now
+- **Hard drive** is the filing cabinet — where everything is stored long-term
+
+The worker can only see what's on the desk. To work on something in the filing cabinet, they first have to take it out and put it on the desk.
+
+---
 
 ## The CPU: The Brain of Your Computer
 
-- **CPU** = Central Processing Unit
-- Executes instructions (math, logic, data movement)
-- Very fast, but can only work with data it has access to
+**CPU** = Central Processing Unit
+
+It's the component that actually **does work**. Every time your code runs:
+
+- It does math
+- It makes decisions
+- It moves data around
+- It calls functions
+
+The CPU is incredibly fast. It can perform **billions of operations per second**. But it has a critical limitation:
+
+> It can only work with data that's in **RAM** — not on the hard drive, not in the cloud. It needs data right next to it.
+
+### What's Inside the CPU
 
 ```
-┌─────────────────────────────────────┐
-│           CPU                       │
-│    ┌─────────────────────┐          │
-│    │  Control Unit      │          │
-│    │  Arithmetic Logic  │          │
-│    │  Unit (ALU)        │          │
-│    └─────────────────────┘          │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│               CPU                       │
+│  ┌─────────────────┐  ┌──────────────┐ │
+│  │ Control Unit    │  │ ALU          │ │
+│  │ (decides what   │  │ (Arithmetic   │ │
+│  │  to do next)    │  │  Logic Unit)   │ │
+│  │                 │  │  does math    │ │
+│  └─────────────────┘  │  & logic     │ │
+│                       └──────────────┘ │
+└─────────────────────────────────────────┘
 ```
+
+The CPU has two main parts:
+
+| Part | What It Does |
+|------|-------------|
+| **Control Unit** | Reads instructions, decides what to do next |
+| **ALU** (Arithmetic Logic Unit) | Does all math: addition, subtraction, comparisons |
+
+---
 
 ## RAM: Where Data Lives While Your Code Runs
 
-- **RAM** = Random Access Memory
-- Temporary storage (data lost when computer turns off)
-- Stores both your code's instructions AND your data
+**RAM** = Random Access Memory
+
+RAM is **temporary storage** — it holds both your code's instructions AND your data while your program runs.
+
+- **Fast** — much faster than reading from a hard drive
+- **Temporary** — everything in RAM is wiped when your computer turns off
+- **Limited** — typically 4-32 GB on most computers
 
 ```
-┌─────────────────────────────────────┐
-│              RAM                    │
-│  ┌──────┬──────┬──────┬──────┐     │
-│  │ 001 │ 002 │ 003 │ 004 │ ...│     │
-│  │     │     │     │     │     │     │
-│  │code │data │data │data │     │     │
-│  └──────┴──────┴──────┴──────┘     │
-│   Memory addresses (like house      │
-│   numbers, but for data)            │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│                  RAM                    │
+│  ┌──────┬──────┬──────┬──────┬──────┐  │
+│  │0x001 │0x002 │0x003 │0x004 │ ...  │  │
+│  │  10  │  20  │  30  │  50  │      │  │
+│  └──────┴──────┴──────┴──────┴──────┘  │
+│   Each address is like a mailbox       │
+│   number, but for data                 │
+└─────────────────────────────────────────┘
 ```
+
+---
 
 ## How CPU and RAM Work Together
 
+When you write Python code and run it, this is what happens behind the scenes:
+
 ```
-Step 1: LOAD
-Your code tells CPU: "Get data from address 001"
-┌──────┐     ┌──────┐
-│ CPU  │ ←── │ RAM │
-└──┬───┘     └──────┘
-   │         
-   ▼         
-──────────    
-Step 2: PROCESS
-CPU executes: "Add 5 to this number"   
-   │         
-   ▼         
-──────────    
-Step 3: STORE
-CPU tells RAM: "Put result at address 003"
-┌──────┐     ┌──────┐
-│ CPU  │ ──→ │ RAM │
-└──────┘     └──────┘
+Step 1: FETCH
+CPU reads the next instruction from RAM
+
+Step 2: DECODE
+CPU figures out what the instruction means
+
+Step 3: EXECUTE
+CPU does the work (math, comparison, etc.)
+
+Step 4: STORE
+CPU puts the result back into RAM
 ```
 
-## Python's Role in This Process
-
-When you write Python code, you don't manage memory directly:
+Let's look at actual code:
 
 ```python
-x = 10          # Python decides where in RAM to store 10
-y = x + 5       # CPU handles the math
-print(y)        # Python retrieves and displays the result
+x = 10        # 1. Store 10 at address 0x001
+y = 20        # 2. Store 20 at address 0x002
+z = x + y      # 3. Fetch x, fetch y, add them, store at 0x003
 ```
 
-| Without Python | With Python |
-|---------------|-------------|
-| You manage memory addresses | Python handles it automatically |
-| You write raw instructions | You write readable code |
-| More control, more complexity | Less control, less complexity |
+```
+┌─────────────────────────────────────┐
+│ RAM                                 │
+│                                     │
+│ 0x001 → 10 (x)                     │
+│ 0x002 → 20 (y)                      │
+│ 0x003 → 30 (z = x + y)             │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+---
+
+## Common Mistakes
+
+```
+❌ Thinking you need to manually manage memory addresses
+   Python handles this for you. You just create variables.
+
+❌ Confusing RAM with the hard drive
+   RAM = temporary workspace (wiped on power off)
+   Hard drive = permanent storage (keeps everything)
+
+❌ Thinking "more RAM = faster computer" always
+   More RAM lets you run more programs at once, not necessarily faster.
+```
+
+---
 
 ## Code Examples
 
-```python
-# Example 1: Simple variable assignment
-# Python stores "10" somewhere in RAM and labels it "x"
-x = 10
-print(x)
+### Example 1 — Simple Variable Assignment
 
-# Example 2: Multiple variables
+```python
+# Python decides where in RAM to store 10
+# You don't need to know the exact memory address
+x = 10
+print(x)  # Output: 10
+```
+
+### Example 2 — Multiple Variables
+
+```python
 # Each variable gets its own space in RAM
 name = "Python"
 version = 3.12
-print(f"{name} {version}")
+is_awesome = True
 
-# Example 3: Operations in Python
+print(f"{name} {version} is awesome: {is_awesome}")
+```
+
+### Example 3 — Math Operations (CPU Does the Work)
+
+```python
 a = 100
 b = 50
 result = a + b
 print(result)  # Output: 150
-
-# What happens internally:
-# 1. CPU fetches a value from RAM (address of 'a')
-# 2. CPU fetches b value from RAM (address of 'b')
-# 3. CPU's ALU performs addition
-# 4. CPU stores result back to RAM
 ```
 
-## Key Takeaways
+### Example 4 — Variable Reassignment
 
-1. **CPU does the work** — executing instructions, doing math, making decisions
-2. **RAM stores data temporarily** — both your code's instructions and your variables
-3. **Python abstracts away the complexity** — you don't need to manage memory directly
-4. **Variables are like labels** — they point to locations in RAM where data is stored
+```python
+# Variables can be reassigned
+# Python updates the value at that memory location
+count = 1
+print(count)  # 1
+count = 2     # Old value is replaced
+print(count)  # 2
+```
+
+### Example 5 — Type Information is Stored Too
+
+```python
+# Python stores both the value AND the type in RAM
+x = 42        # int
+y = 3.14      # float
+z = "hello"   # str
+
+print(type(x))  # <class 'int'>
+print(type(y))  # <class 'float'>
+print(type(z))  # <class 'str'>
+```
+
+---
 
 ## Practice Exercise
 
@@ -126,4 +208,22 @@ z = x + y
 print(f"x = {x}, y = {y}, z = {z}")
 ```
 
-Think about: Where do x, y, and z live in RAM? What does the CPU do with these values?
+Think about: **Where do `x`, `y`, and `z` live in RAM? What does the CPU do with these values?**
+
+---
+
+## Key Takeaways
+
+- **CPU** does the actual work — executing instructions, doing math, making decisions
+- **RAM** stores data temporarily — both your code's instructions AND your variables
+- **Python abstracts away the complexity** — you don't need to manage memory yourself
+- **Variables are labels** — they point to locations in RAM where data is stored
+- **When your program ends, everything in RAM is wiped** — that's why you save files!
+
+---
+
+## Further Reading
+
+- [How CPUs Work — Crash Course Computer Science #8](https://www.youtube.com/watch?v=FZGugFqdr60) — Excellent 10-minute video
+- [RAM vs ROM — GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-ram-and-rom/) — Clear comparison
+- [Memory Management in Python — Real Python](https://realpython.com/python-memory-management/) — For when you're ready to go deeper
