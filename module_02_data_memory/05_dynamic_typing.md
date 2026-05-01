@@ -2,35 +2,63 @@
 
 ## Learning Objectives
 
-- Understand dynamic typing vs static typing
-- Learn how Python determines types at runtime
-- Create flexible code using dynamic typing
+By the end of this lesson, you will be able to:
 
-## What is Dynamic Typing?
+- Understand the difference between dynamic and static typing
+- See how Python tracks types at runtime
+- Use type hints to document your code
 
-In Python, **you don't declare variable types** - Python figures it out automatically.
+---
 
-```python
-# No type declaration needed!
-x = 10        # Python knows x is an int
-x = "hello"   # Now x is a string - completely fine!
+## Mental Model: The Chameleon
+
+In languages like Java or C++, you declare the type of every variable:
+
+```java
+// Java (static typing) — type must be declared
+int x = 10;        // x is an integer
+String name = "hi"; // name is a string
 ```
 
-This is different from many other languages:
+In Python, the variable doesn't have a type — **the value does**:
 
 ```python
-# Java (static typing) - you MUST declare type
-int x = 10;
-String x = "hello";  // ERROR! Can't reuse variable name
-
-# Python (dynamic typing) - no declaration needed
-x = 10        # x is now an int
-x = "hello"   # x is now a string - totally fine!
+# Python (dynamic typing) — type is inferred
+x = 10          # Python sees: x points to an int
+x = "hello"     # Python sees: x now points to a string
+x = 3.14        # Python sees: x now points to a float
 ```
 
-## How Python Handles Types
+Python is like a **chameleon** — it adapts to whatever value you give it.
 
-Python tracks types at **runtime** (when code executes):
+---
+
+## Dynamic vs Static: The Trade-off
+
+| Aspect | Dynamic (Python) | Static (Java, C++) |
+|--------|------------------|-------------------|
+| **Declare types?** | No | Yes |
+| **Type errors** | Caught at runtime | Caught before running |
+| **Flexibility** | High — change types anytime | Low — type is fixed |
+| **Speed** | Slightly slower | Faster |
+| **Beginner-friendly?** | ✅ Yes | ❌ More to learn |
+
+### What This Means for You
+
+```python
+# In Python, you focus on what you want to do — not the type system
+name = "Alice"      # String
+name = 123           # Now it's an int
+name = [1, 2, 3]    # Now it's a list
+
+# Python doesn't care. It just works.
+```
+
+---
+
+## How Python Tracks Types
+
+Python stores the **type with the value**, not the variable:
 
 ```python
 x = 10
@@ -38,102 +66,125 @@ print(type(x))  # <class 'int'>
 
 x = "hello"
 print(type(x))  # <class 'str'>
+
+x = [1, 2, 3]
+print(type(x))  # <class 'list'>
 ```
 
+The variable `x` is just a label. The type belongs to what `x` points to.
+
+---
+
+## Common Mistakes
+
 ```
-┌─────────────────────────────────────┐
-│  Dynamic Typing in Action           │
-│                                      │
-│  x = 10     → type: int             │
-│  x = "hello"→ type: str              │
-│  x = [1,2]  → type: list            │
-│                                      │
-│  Type changes as you assign new     │
-│  values - Python handles it all!    │
-└─────────────────────────────────────┘
+❌ Assuming a variable keeps its type
+   x = 10        # x is int
+   x = "hello"   # x is now str — no warning!
+
+❌ Not knowing type hints exist (Python 3.5+)
+   x: int = 10   ← This documents intent but doesn't enforce it
+
+❌ Using type() in production code for logic
+   if type(x) == int:     ← Not Pythonic
+   if isinstance(x, int): ← Better
 ```
 
-## Benefits and Drawbacks
+---
 
-### Benefits
+## Code Examples
 
-| Benefit | Example |
-|---------|---------|
-| Less code to write | No type declarations |
-| More flexibility | Change types easily |
-| Faster prototyping | Try different approaches |
-| Beginner-friendly | Focus on logic, not syntax |
+### Example 1 — Type Changes Automatically
 
-### Drawbacks
+```python
+value = 10
+print(type(value))  # <class 'int'>
 
-| Drawback | Example |
-|----------|---------|
-| Less error checking | Bugs caught later |
-| Harder to read code | Unclear what type expected |
-| Slower performance | Type checked at runtime |
+value = "hello"
+print(type(value))  # <class 'str'>
+
+value = 3.14
+print(type(value))  # <class 'float'>
+```
+
+### Example 2 — Function Returns Different Types
+
+```python
+def get_result(value):
+    """Returns a string for large values, int for small."""
+    if value > 10:
+        return "Big"      # String
+    else:
+        return 0          # Integer
+
+print(get_result(5))     # 0 (int)
+print(get_result(15))    # Big (str)
+```
+
+### Example 3 — Type Hints (Optional)
+
+Type hints document what type a variable **should** be. Python ignores them at runtime — they're for humans and tools:
+
+```python
+def greet(name: str) -> str:
+    """name: str means 'name should be a string'."""
+    """-> str means 'this function returns a string'."""
+    return f"Hello, {name}!"
+
+print(greet("Alice"))  # Hello, Alice!
+```
+
+### Example 4 — Checking Types at Runtime
+
+```python
+x = "hello"
+
+# Using isinstance() — the Pythonic way
+if isinstance(x, str):
+    print(f"x is a string: {x.upper()}")
+
+# You can check multiple types
+y = 10
+if isinstance(y, (int, float)):
+    print(f"y is a number: {y}")
+```
+
+### Example 5 — When Dynamic Typing Bites You
+
+```python
+# A common bug: mixing types accidentally
+def add_values(a, b):
+    """Expects two numbers, but Python won't stop strings."""
+    return a + b
+
+# This works:
+print(add_values(10, 5))      # 15 (int addition)
+print(add_values(3.14, 2))    # 5.14 (float addition)
+
+# But this also "works" — maybe not what you intended:
+print(add_values("10", "5"))  # "105" (string concatenation!)
+```
+
+---
 
 ## Best Practices
 
 ```python
-# ✅ Good: Clear variable names indicate expected type
-user_name = "Alice"       # String
-user_count = 10           # Integer
-is_active = True         # Boolean
+# ✅ Use clear variable names that indicate type
+user_name = "Alice"       # Clearly a string
+user_count = 10           # Clearly an int
+is_active = True          # Clearly a boolean
 
-# ❌ Bad: Unclear names obscure type intent
-x = "Alice"
-y = 10
-z = True
+# ✅ Use type hints for functions
+def calculate_total(price: float, quantity: int) -> float:
+    return price * quantity
 
-# ⚠️ Use type hints (Python 3.5+)
-# This documents intent while keeping flexibility
-name: str = "Alice"
-age: int = 25
-is_active: bool = True
-```
-
-## Code Examples
-
-```python
-# Example 1: Type changes automatically
-value = 10
-print(type(value))  # int
-
-value = "hello"
-print(type(value))  # str
-
-value = 3.14
-print(type(value))  # float
-
-# Example 2: Function returns different types
-def get_result(value):
-    if value > 10:
-        return "Big"      # String
-    else:
-        return 0           # Integer (different type!)
-
-print(get_result(5))    # 0
-print(get_result(15))  # Big
-
-# Example 3: Type hints (optional but helpful)
-def greet(name: str) -> str:
-    return f"Hello, {name}!"
-
-print(greet("Alice"))
-
-# Example 4: Checking types at runtime
-x = "hello"
+# ✅ Use isinstance() for type checking
 if isinstance(x, str):
-    print(f"x is a string: {x.upper()}")
+    print(x.upper())
 ```
 
-## Key Takeaways
-
-1. **Dynamic typing** - Python determines types automatically
-2. **No declarations needed** - Just assign values
-3. **Types can change** - Variable type changes with new value
-4. **Type hints** - Optional way to document intent
-5. **Trade-off** - Less code but potentially more bugs
+---
 
 ## Practice Exercise
 
@@ -142,3 +193,21 @@ if isinstance(x, str):
 3. Change it to a string
 4. Print its type again
 5. Use a type hint for a variable and see how it behaves
+
+---
+
+## Key Takeaways
+
+- **Dynamic typing** means Python figures out types automatically
+- **Variables don't have types** — values do
+- **Type hints** document intent but don't enforce anything
+- **isinstance()** is the Pythonic way to check types
+- **Trade-off**: less code but fewer safety checks
+
+---
+
+## Further Reading
+
+- [Python Type Hints — Official Docs](https://docs.python.org/3/library/typing.html)
+- [Dynamic vs Static Typing — Real Python](https://realpython.com/python-type-checking/)
+- [Mypy — Type Checker for Python](https://mypy.readthedocs.io/) — Add type checking to Python

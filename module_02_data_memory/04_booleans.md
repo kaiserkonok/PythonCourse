@@ -2,133 +2,209 @@
 
 ## Learning Objectives
 
-- Understand the boolean data type
-- Learn True and False values
-- Use booleans in conditional logic
+By the end of this lesson, you will be able to:
 
-## What is a Boolean?
+- Understand the boolean data type and its two possible values
+- Create booleans from comparisons
+- Use booleans to make decisions in your code
 
-A boolean represents **truth values** - either True or False.
+---
 
-- Only two possible values: True or False
-- Used for making decisions in code
-- Foundation of all programming logic
+## Mental Model: Light Switch
 
-```python
-is_active = True
-is_admin = False
+A boolean is the simplest data type in Python — it can only be one of two things:
+
+```
+True   ← Light switch is ON
+False  ← Light switch is OFF
 ```
 
-## Boolean in Everyday Programming
+That's it. Every decision in every program ultimately comes down to `True` or `False`.
+
+---
+
+## Creating Booleans
+
+### Direct Assignment
 
 ```python
-# Is user logged in?
-is_logged_in = True
-
-# Is user an admin?
-is_admin = False
-
-# Is account active?
-is_active = True
+is_raining = True
+is_sunny = False
 ```
 
-## Boolean from Comparisons
+### From Comparisons
 
-Many operations return booleans:
+Most booleans come from comparisons:
 
 ```python
-# Comparison operators return True or False
 print(10 > 5)      # True
 print(10 < 5)      # False
 print(10 == 10)    # True (equals)
 print(10 != 5)     # True (not equals)
-
-# Check string equality
-name = "Alice"
-print(name == "Alice")   # True
-print(name == "Bob")      # False
+print("a" == "A")  # False (case-sensitive)
 ```
 
-## Boolean Values in Python
+---
 
-| Expression | Result |
-|-------------|-------|
-| True | True |
-| False | False |
-| 1 == 1 | True |
-| 1 == 2 | False |
-| "Python" == "python" | False (case-sensitive) |
+## Capitalization Matters
 
 ```python
-# Be careful with capitalization!
-is_valid = true    # ❌ NameError: name 'true' is not defined
-is_valid = True    # ✅ Correct
+# ✅ Correct — Python keywords are case-sensitive
+is_valid = True
+is_active = False
 
-is_active = false   # ❌ NameError
-is_active = False   # ✅ Correct
+# ❌ Wrong — lowercase 'true' is not recognized
+is_valid = true    # NameError: name 'true' is not defined
+is_active = false  # NameError: name 'false' is not defined
 ```
 
-## Using Booleans
+Python's booleans are **capitalized**: `True` and `False`. Always.
+
+---
+
+## The "Truthy" and "Falsy" Concept
+
+In Python, many values behave like booleans:
+
+| Falsy (behaves like `False`) | Truthy (behaves like `True`) |
+|------------------------------|------------------------------|
+| `False` | `True` |
+| `0` | `1`, `42`, any non-zero number |
+| `""` (empty string) | `"hello"`, any non-empty string |
+| `[]` (empty list) | `[1, 2, 3]`, any non-empty list |
+| `None` | Almost anything else |
 
 ```python
-# Simple boolean variable
-is_student = True
-print(f"Is student: {is_student}")
+# These all evaluate to False in conditions
+print(bool(0))       # False
+print(bool(""))      # False
+print(bool([]))      # False
+print(bool(None))    # False
 
-# Boolean from comparison
-age = 18
-is_adult = age >= 18
-print(f"Is adult: {is_adult}")  # True
-
-# Boolean in if statements (more in Module 4)
-if is_adult:
-    print("You can vote!")
+# These all evaluate to True
+print(bool(1))       # True
+print(bool("hello")) # True
+print(bool([1, 2]))  # True
 ```
+
+---
+
+## Common Mistakes
+
+```
+❌ Using lowercase true/false
+   is_valid = true    → NameError
+   is_valid = True    ← Correct
+
+❌ Confusing == with =
+   if x = 5:         → SyntaxError (use == for comparison)
+   if x == 5:        ← Correct
+
+❌ Comparing booleans to True/False
+   if is_raining == True:   ← Works, but not Pythonic
+   if is_raining:           ← Clean and Pythonic
+
+❌ Assuming float comparison is exact
+   0.1 + 0.2 == 0.3  → False (floating-point issue, not a boolean issue)
+```
+
+---
 
 ## Code Examples
 
+### Example 1 — Basic Boolean
+
 ```python
-# Example 1: Basic boolean
 is_raining = True
-print(f"Is it raining? {is_raining}")
-
-# Example 2: Boolean operators
-is_sunny = True
-is_warm = False
-print(is_sunny and is_warm)   # False (both must be True)
-print(is_sunny or is_warm)    # True (at least one is True)
-print(not is_sunny)          # False (opposite)
-
-# Example 3: Comparison to boolean
-score = 85
-passed = score >= 60
-print(f"Passed: {passed}")  # True
-
-# Example 4: Multiple comparisons
-age = 25
-has_license = True
-can_drive = age >= 18 and has_license
-print(f"Can drive: {can_drive}")  # True
-
-# Example 5: Boolean from string methods
-email = "user@example.com"
-is_valid = "@" in email
-print(f"Valid email: {is_valid}")  # True
+print(f"Is it raining? {is_raining}")  # Is it raining? True
 ```
 
-## Key Takeaways
+### Example 2 — Boolean from Comparison
 
-1. **Booleans** have only two values: True or False
-2. **Capitalization matters**: True, not true
-3. **Comparisons** return boolean values
-4. **Boolean operators**: and, or, not
-5. **Used in decisions** - the foundation of program flow
+```python
+age = 18
+is_adult = age >= 18
+print(f"Is adult: {is_adult}")  # True
+```
+
+### Example 3 — Boolean Operators
+
+```python
+is_sunny = True
+is_warm = False
+
+# AND — both must be True
+print(is_sunny and is_warm)   # False
+
+# OR — at least one must be True
+print(is_sunny or is_warm)    # True
+
+# NOT — inverts the value
+print(not is_sunny)           # False
+```
+
+### Example 4 — Combining Conditions
+
+```python
+age = 25
+has_license = True
+
+# Can drive if both conditions are True
+can_drive = age >= 18 and has_license
+print(f"Can drive: {can_drive}")  # True
+```
+
+### Example 5 — Boolean from String Operations
+
+```python
+email = "user@example.com"
+
+# Check if email contains "@"
+is_valid_email = "@" in email
+print(f"Valid email: {is_valid_email}")  # True
+
+# Check if name is empty
+name = ""
+is_empty = not name
+print(f"Name is empty: {is_empty}")  # True
+```
+
+### Example 6 — Truthy and Falsy
+
+```python
+# Check truthiness
+print(bool(0))        # False
+print(bool(1))        # True
+print(bool(-1))       # True (any non-zero is True)
+print(bool(""))       # False
+print(bool("hello"))  # True
+```
+
+---
 
 ## Practice Exercise
 
 1. Create two boolean variables:
-   - has_python_book (True or False)
-   - has_experience (True or False)
+   - `has_python_book` (True or False)
+   - `has_experience` (True or False)
 2. Print whether you have both
 3. Print whether you have at least one
-4. Print the opposite of has_experience
+4. Print the opposite of `has_experience`
+
+---
+
+## Key Takeaways
+
+- **Booleans have only two values**: `True` and `False`
+- **Capitalization matters**: `True`, not `true`
+- **Comparisons return booleans**: `10 > 5` → `True`
+- **Truthy/Falsy**: Many values behave like booleans in conditions
+- **Keep it simple**: `if is_raining:` is cleaner than `if is_raining == True:`
+
+---
+
+## Further Reading
+
+- [Boolean Operations — Official Docs](https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not)
+- [Truth Value Testing — Official Docs](https://docs.python.org/3/library/stdtypes.html#truth-value-testing)
+- [Python Comparison Operators — Real Python](https://realpython.com/python-operators-expressions/)

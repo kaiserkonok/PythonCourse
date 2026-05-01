@@ -2,131 +2,194 @@
 
 ## Learning Objectives
 
-- Understand integer, float, and complex number types
-- Know when to use each number type
-- Perform math operations with different number types
+By the end of this lesson, you will be able to:
+
+- Identify and use Python's three numeric types: int, float, and complex
+- Perform arithmetic operations on each type
+- Understand floating-point precision issues and when to avoid floats for money
+
+---
+
+## Mental Model: Measuring Tape vs. Counting Fingers
+
+- **Integers** are like counting fingers — whole, exact numbers
+- **Floats** are like a measuring tape — continuous, but with rounding
+- **Complex** numbers are like a 2D coordinate system — real part + imaginary part
+
+---
 
 ## The Three Numeric Types
 
-### Integer (int)
-- Whole numbers (no decimal points)
-- Positive or negative
-- Examples: 42, -10, 0, 1000
+### Integer (`int`) — Whole Numbers
 
-### Float (float)
-- Numbers with decimal points
-- Also called "floating-point" numbers
-- Examples: 3.14, -0.5, 100.0
+Integers are exact, whole numbers with no decimal point.
 
-### Complex (complex)
-- Numbers with real and imaginary parts
-- Format: a + bj
-- Used in advanced math and signal processing
+| Example | Valid? |
+|---------|-------|
+| `42` | ✅ |
+| `-10` | ✅ |
+| `0` | ✅ |
+| `1_000_000` | ✅ (underscores for readability) |
+| `3.14` | ❌ (that's a float) |
 
-```
-┌─────────────────────────────────────┐
-│        Numeric Types in Python       │
-├─────────────────────────────────────┤
-│  int    → 42, -10, 0                │
-│  float  → 3.14, -0.5, 100.0         │
-│  complex → 3+4j, 1-2j              │
-└─────────────────────────────────────┘
-```
+### Float (`float`) — Decimal Numbers
 
-## When to Use Each Type
+Floats represent numbers with a decimal point. They can approximate most real numbers.
 
-| Use case | Type |
-|----------|------|
-| Counting items | int |
-| Money/currency | float (or int for cents) |
-| Temperatures | float |
-| Complex math | complex |
-| Boolean (1/0) | int (but use bool!) |
+| Example | Valid? |
+|---------|-------|
+| `3.14` | ✅ |
+| `-0.5` | ✅ |
+| `100.0` | ✅ |
+| `1e6` | ✅ (scientific notation: 1,000,000) |
 
-## Checking Type with type()
+### Complex (`complex`) — Real + Imaginary
 
-```python
-x = 42
-print(type(x))  # <class 'int'>
+Complex numbers have a real part and an imaginary part (marked with `j`).
 
-y = 3.14
-print(type(y))  # <class 'float'>
+| Example | Real | Imaginary |
+|---------|------|-----------|
+| `3 + 4j` | 3.0 | 4.0 |
+| `1 - 2j` | 1.0 | -2.0 |
+| `5j` | 0.0 | 5.0 |
 
-z = 3 + 4j
-print(type(z))  # <class 'complex'>
-```
+---
 
-## Code Examples
+## The Floating-Point Gotcha
+
+This is the **#1 surprise** for new Python developers:
 
 ```python
-# Example 1: Integer operations
-a = 10
-b = 3
-print(a + b)    # 13 (addition)
-print(a - b)    # 7  (subtraction)
-print(a * b)    # 30 (multiplication)
-print(a / b)    # 3.333... (division)
-print(a // b)   # 3  (floor division)
-print(a % b)    # 1  (modulus/remainder)
-print(a ** b)   # 1000 (exponent)
-
-# Example 2: Float operations
-x = 10.5
-y = 2.0
-print(x + y)    # 12.5
-print(x * y)    # 21.0
-
-# Example 3: Mixed int and float
-i = 10   # int
-f = 2.5  # float
-print(i + f)    # 12.5 (int becomes float automatically)
-
-# Example 4: Complex numbers
-c1 = 3 + 4j
-c2 = 1 + 2j
-print(c1 + c2)  # (4+6j)
-print(c1 * c2)  # (-5+10j)
-
-# Example 5: Accessing complex parts
-c = 3 + 4j
-print(c.real)   # 3.0 (real part)
-print(c.imag)   # 4.0 (imaginary part)
+price = 0.1 + 0.2
+print(price)  # 0.30000000000000004  ← NOT 0.3!
 ```
+
+**Why?** Floats are stored in binary (base-2), and some decimal numbers can't be represented exactly in binary.
+
+```python
+# ✅ Solution for money: Use integers (cents)
+price_cents = 10 + 20
+print(price_cents)  # 30 cents — exact!
+
+# Or use the decimal module for currency (later course)
+```
+
+---
 
 ## Common Mistakes
 
-```python
-# ❌ Wrong: Using float for exact math (money)
-price = 0.1 + 0.2
-print(price)  # 0.30000000000000004 (floating-point error)
+```
+❌ Expecting float math to be exact
+   0.1 + 0.2 == 0.3  → False (it's 0.30000000000000004)
 
-# ✅ Better: Use int for money (cents)
-price_cents = 10 + 20  # cents
-print(price_cents)     # 30 cents (exact)
+❌ Using / when you want whole number division
+   10 / 3  → 3.333... (float)
+   Use // for floor division: 10 // 3  → 3
 
-# ❌ Wrong: Accidental float division
-a = 5
-b = 2
-print(a / b)   # 2.5 (Python 3 always does float division)
+❌ Forgetting that int() truncates, not rounds
+   int(3.9)  → 3 (not 4!)
 
-# ✅ Best: Explicit floor division when needed
-print(a // b)  # 2 (floor division)
-print(a % b)   # 1 (remainder)
+❌ Using complex for everyday math
+   c = 3 + 4j  ← Only use complex if you actually need it
 ```
 
-## Key Takeaways
+---
 
-1. **int** = whole numbers (42, -10, 0)
-2. **float** = decimal numbers (3.14, -0.5)
-3. **complex** = real + imaginary (3 + 4j)
-4. **Mixed operations** = int converts to float automatically
-5. **For money**: use int (cents) to avoid floating-point errors
+## Code Examples
+
+### Example 1 — Integer Operations
+
+```python
+# All basic math with integers
+a = 10
+b = 3
+
+print(a + b)     # 13 (addition)
+print(a - b)     # 7  (subtraction)
+print(a * b)     # 30 (multiplication)
+print(a / b)     # 3.333... (division → always float!)
+print(a // b)    # 3  (floor division → rounds down)
+print(a % b)     # 1  (modulus → remainder)
+print(a ** b)    # 1000 (exponent → 10^3)
+```
+
+### Example 2 — Float Operations
+
+```python
+# Floats work the same way
+x = 10.5
+y = 2.0
+
+print(x + y)     # 12.5
+print(x * y)     # 21.0
+print(x / y)     # 5.25
+```
+
+### Example 3 — Mixed int and float
+
+```python
+# When int and float mix, the result is always float
+i = 10     # int
+f = 2.5    # float
+
+print(i + f)    # 12.5 (float)
+print(i * f)    # 25.0 (float)
+```
+
+### Example 4 — Complex Numbers
+
+```python
+# Complex numbers have real and imaginary parts
+c1 = 3 + 4j
+c2 = 1 + 2j
+
+print(c1 + c2)     # (4+6j)
+print(c1 * c2)     # (-5+10j)
+
+# Access parts
+c = 3 + 4j
+print(c.real)      # 3.0
+print(c.imag)      # 4.0
+```
+
+### Example 5 — Checking Types
+
+```python
+# Every number has a type
+x = 42
+y = 3.14
+z = 3 + 4j
+
+print(type(x))     # <class 'int'>
+print(type(y))     # <class 'float'>
+print(type(z))     # <class 'complex'>
+```
+
+---
 
 ## Practice Exercise
 
 1. Create an integer variable for your age
 2. Create a float variable for your height in meters
 3. Calculate your age in 10 years
-4. Print the result
+4. Print both using an f-string
 
-Bonus: Create a complex number and print its real and imaginary parts.
+**Bonus:** Create a complex number and print its real and imaginary parts.
+
+---
+
+## Key Takeaways
+
+- **`int`** = whole numbers (`42`, `-10`, `0`) — exact
+- **`float`** = decimal numbers (`3.14`, `-0.5`) — approximations
+- **`complex`** = real + imaginary (`3 + 4j`) — for advanced math
+- **Float math can be imprecise** — use integers for money
+- **Division (`/`) always returns float** — use `//` for whole numbers
+
+---
+
+## Further Reading
+
+- [Python Numeric Types — Official Docs](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex)
+- [Floating-Point Arithmetic — Python Docs](https://docs.python.org/3/tutorial/floatingpoint.html) — Why 0.1 + 0.2 != 0.3
+- [Python's decimal Module](https://docs.python.org/3/library/decimal.html) — For precise decimal arithmetic
