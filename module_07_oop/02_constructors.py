@@ -1,100 +1,125 @@
-# Code examples from "Constructors" lesson
+"""
+Constructors (Initializing Objects)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Basic __init__
-class Person:
-    def __init__(self, name):
-        self.name = name
-
-    def greet(self):
-        return f"Hello, I'm {self.name}"
-
-person = Person("Alice")
-print(person.greet())
-
-# Example 2: Multiple attributes
+# Example 1 — Basic Constructor
 class Rectangle:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-    
-    def area(self):
-        return self.width * self.height
 
-rect = Rectangle(5, 3)
-print(f"Area: {rect.area()}")
+rect = Rectangle(10, 5)
+print(f"Size: {rect.width}x{rect.height}")
 
-# Example 3: Default values
+
+# Example 2 — Default Values
 class User:
-    def __init__(self, name, role="user"):
-        self.name = name
+    def __init__(self, username, role="user"):
+        self.username = username
         self.role = role
-    
-    def info(self):
-        return f"{self.name} is a {self.role}"
 
-user1 = User("Alice")
-user2 = User("Bob", "admin")
-print(user1.info())
-print(user2.info())
+admin = User("alice", "admin")
+guest = User("bob")  # Uses default role
 
-# Example 4: Calculate in __init__
+print(f"{admin.username} is {admin.role}")
+print(f"{guest.username} is {guest.role}")
+
+
+# Example 3 — Validation
+class BankAccount:
+    def __init__(self, owner, balance=0):
+        if balance < 0:
+            raise ValueError("Balance cannot be negative")
+        self.owner = owner
+        self.balance = balance
+
+account = BankAccount("Alice", 500)
+print(f"{account.owner}: ${account.balance}")
+
+
+# Example 4 — Computed Attributes
+import math
+
 class Circle:
     def __init__(self, radius):
         self.radius = radius
-        self.area = 3.14 * radius * radius
-    
-    def get_area(self):
-        return self.area
+        self.diameter = radius * 2
+        self.area = math.pi * radius ** 2
 
-circle = Circle(5)
-print(f"Area: {circle.get_area()}")
-
-# Example 5: Initialize with default and calculated
-class BankAccount:
-    def __init__(self, initial_balance=0):
-        self.balance = initial_balance
-    
-    def deposit(self, amount):
-        self.balance += amount
-        return self.balance
-    
-    def withdraw(self, amount):
-        if amount <= self.balance:
-            self.balance -= amount
-        return self.balance
-
-account = BankAccount(100)
-account.deposit(50)
-print(f"Balance: {account.withdraw(30)}")
+c = Circle(5)
+print(f"Radius: {c.radius}, Diameter: {c.diameter}, Area: {c.area:.2f}")
 
 
-# =====================
-# PRACTICE EXERCISE
-# =====================
-
-# 1. Create a Book class with title and author
-class Book:
-    def __init__(self, title, author):
-        self.title = title
-        self.author = author
-    
-    # 2. Add a method to display book info
-    def display_info(self):
-        return f"'{self.title}' by {self.author}"
-
-book = Book("1984", "George Orwell")
-print(book.display_info())
-
-# 3. Create a Product class with name, price, and quantity
+# Example 5 — `__str__` for Display
 class Product:
-    def __init__(self, name, price, quantity):
+    def __init__(self, name, price):
         self.name = name
         self.price = price
-        self.quantity = quantity
-        self.total_value = price * quantity
-    
-    def info(self):
-        return f"{self.name}: ${self.price} x {self.quantity} = ${self.total_value}"
 
-laptop = Product("Laptop", 999, 2)
-print(laptop.info())
+    def __str__(self):
+        return f"{self.name} - ${self.price}"
+
+item = Product("Laptop", 999)
+print(item)  # Laptop - $999
+
+
+# Example 6 — Optional Parameters
+class Book:
+    def __init__(self, title, author, year=None, genre="Unknown"):
+        self.title = title
+        self.author = author
+        self.year = year
+        self.genre = genre
+
+b1 = Book("1984", "Orwell", 1949, "Dystopian")
+b2 = Book("Dune", "Herbert")  # year=None, genre="Unknown"
+
+print(f"{b1.title} ({b1.year}) - {b1.genre}")
+print(f"{b2.title} - {b2.genre}")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRACTICE EXERCISE
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Create a Student class with name, grade, and optional major
+# 2. Add validation to ensure grade is between 0 and 100
+# 3. Create a __str__ method for nice printing
+# 4. Test with multiple objects
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class Student:
+    def __init__(self, name, grade, major="Undeclared"):
+        if not 0 <= grade <= 100:
+            raise ValueError("Grade must be between 0 and 100")
+        self.name = name
+        self.grade = grade
+        self.major = major
+
+    def __str__(self):
+        return f"{self.name} (Grade: {self.grade}, Major: {self.major})"
+
+s1 = Student("Alice", 95, "Computer Science")
+s2 = Student("Bob", 82)
+
+print(s1)
+print(s2)
+
+# Try modifying it:
+# - Add a method to check if student passed
+class StudentWithPass:
+    def __init__(self, name, grade):
+        self.name = name
+        self.grade = grade
+
+    def passed(self):
+        return self.grade >= 50
+
+    def __str__(self):
+        status = "Passed" if self.passed() else "Failed"
+        return f"{self.name}: {self.grade}% ({status})"
+
+s3 = StudentWithPass("Charlie", 45)
+print(s3)

@@ -1,83 +1,136 @@
-# Code examples from "Loop Control" lesson
+"""
+Loop Control (break, continue, else)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: break - find first match
-fruits = ["apple", "banana", "cherry", "date"]
+# Example 1 — `break` in a For Loop
+# Search for a number
+target = 7
+numbers = [1, 3, 5, 7, 9, 11]
 
-for fruit in fruits:
-    if fruit == "cherry":
-        print(f"Found {fruit}!")
+for num in numbers:
+    if num == target:
+        print(f"Found {target}!")
         break
-    else:
-        print(f"Not {fruit}")
+    print(f"Checking {num}...")
 
-print("---")
 
-# Example 2: continue - skip even numbers
+# Example 2 — `break` in a While Loop
+# Keep asking until user enters "quit"
+# (Simulated to avoid blocking)
+commands = ["run", "test", "quit"]
+for command in commands:
+    print(f"Enter command (or 'quit' to exit): {command}")
+    if command == "quit":
+        print("Goodbye!")
+        break
+    print(f"Running: {command}")
+
+
+# Example 3 — `continue` in Action
+# Process only odd numbers
 for i in range(10):
     if i % 2 == 0:
+        continue  # Skip even numbers
+    print(f"Processing {i}")
+
+
+# Example 4 — `continue` to Skip Errors
+# Process data, skip invalid entries
+data = [10, 0, 20, 30]  # Removed "bad" to avoid TypeError in simple example
+
+for item in data:
+    try:
+        result = 100 / item
+        print(f"100 / {item} = {result}")
+    except ZeroDivisionError:
+        print(f"Skipping {item} (division by zero)")
         continue
-    print(f"Odd: {i}")  # 1 3 5 7 9
 
-print("---")
 
-# Example 3: pass - placeholder
-class MyClass:
-    pass  # Will add methods later
+# Example 5 — `else` with `break`
+# Check if a number is prime
+number = 17
 
-print("MyClass created!")
-
-# Example 4: break in while loop
-count = 0
-
-while True:
-    print(count)
-    count += 1
-    if count >= 5:
+for i in range(2, number):
+    if number % i == 0:
+        print(f"{number} is not prime (divisible by {i})")
         break
+else:
+    # Only runs if loop didn't break
+    print(f"{number} is prime!")
 
-print("---")
 
-# Example 5: continue in while loop
-count = 0
+# Example 6 — Combining All Three
+# Process a list, skip negatives, stop at 999
+numbers = [5, -2, 10, -8, 15, 999, 20]
 
-while count < 5:
-    count += 1
-    if count == 3:
+for num in numbers:
+    if num == 999:
+        print("Found sentinel value, stopping!")
+        break
+    if num < 0:
+        print(f"Skipping negative: {num}")
         continue
-    print(count)  # 1 2 4 5 (skips 3)
+    print(f"Processing: {num}")
+else:
+    print("All numbers processed (no 999 found)")
 
 
-# =====================
+# ═══════════════════════════════════════════════════════════════════════════════
 # PRACTICE EXERCISE
-# =====================
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Use break to stop a loop when you find a specific number
+# 2. Use continue to skip numbers divisible by 3
+# 3. Use else to detect if a search failed
+# 4. Combine break and continue in one loop
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# 1. Find the first number divisible by 7 from 1-50
-for i in range(1, 51):
-    if i % 7 == 0:
-        print(f"First divisible by 7: {i}")
+# 1. Find specific number
+search_list = [2, 5, 8, 12, 15, 20]
+search_target = 12
+for num in search_list:
+    if num == search_target:
+        print(f"Found {search_target}!")
         break
+else:
+    print(f"{search_target} not found")
 
-print("---")
-
-# 2. Print all numbers 1-10 except multiples of 3
+# 2. Skip numbers divisible by 3
 for i in range(1, 11):
     if i % 3 == 0:
         continue
-    print(i)  # 1 2 4 5 7 8 10
+    print(i, end=" ")
+print()
 
-print("---")
+# 3. Search with else
+items = ["apple", "banana", "cherry"]
+target = "grape"
+for item in items:
+    if item == target:
+        print(f"Found {target}")
+        break
+else:
+    print(f"{target} not in list")
 
-# 3. Use pass in a for loop that prints nothing
-for i in range(5):
-    pass  # No output
+# 4. Combine break and continue
+values = [1, 2, -3, 4, 5, -6, 7, 99, 8]
+for val in values:
+    if val == 99:
+        print("Found 99, stopping!")
+        break
+    if val < 0:
+        print(f"Skip negative: {val}")
+        continue
+    print(f"Value: {val}")
 
-print("Loop completed (did nothing)")
-
-# 4. Combine break and continue in one loop
-for i in range(10):
-    if i == 2:
-        continue  # Skip 2
-    if i == 7:
-        print("Found 7, stopping!")
-        break  # Stop at 7
-    print(i)  # 0 1 3 4 5 6
+# Try modifying it:
+# - Use break in nested loops (note: only exits inner loop)
+for row in range(3):
+    for col in range(3):
+        if row == 1 and col == 1:
+            print("Breaking inner loop")
+            break
+        print(f"({row}, {col})")

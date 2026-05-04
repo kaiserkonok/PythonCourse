@@ -1,128 +1,232 @@
-# Dictionaries: Mapping Data Using Key-Value Pairs (Hash Maps)
+# 📚 Dictionaries: Key-Value Lookups
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/dict-Key%20Value%20Pairs-blue?style=flat-square" alt="dict">
+  <img src="https://img.shields.io/badge/Lookup-Fast%20O(1)-green?style=flat-square" alt="O(1)">
+  <img src="https://img.shields.io/badge/Flexible-Any%20Data-orange?style=flat-square" alt="Flexible">
+</p>
 
-- Create and use dictionaries
-- Access and modify values by key
-- Use common dictionary methods
+> ### 💡 A dictionary is like a real dictionary — you look up a word (key) to get its definition (value). No searching, just instant lookup.
+> Learn how to store and retrieve data using keys.
 
-## What is a Dictionary?
+---
 
-A dictionary stores **key-value pairs**:
+## 🎯 Learning Objectives
 
-- Key: The identifier
-- Value: The data
-- Fast lookup by key (O(1) complexity)
+By the end of this lesson, you will be able to:
 
-```python
-# Key: Value
-user = {
-    "name": "Alice",
-    "age": 25,
-    "city": "NYC"
-}
+- ✅ Create and access dictionaries
+- ✅ Add, modify, and remove key-value pairs
+- ✅ Iterate over keys, values, and items
+- ✅ Use common dict methods: `get`, `keys`, `values`, `items`
+
+---
+
+## 🧠 Mental Model: A Phone Book
+
+A dictionary stores **key-value pairs**. Think of it like a phone book:
+
+```
+🔑 Key (Name)   →  📝 Value (Number)
+"Alice"         →  "555-0123"
+"Bob"           →  "555-0456"
 ```
 
-## Creating Dictionaries
+You look up by name, not by position. Instant access!
+
+---
+
+## 📖 Creating Dictionaries
 
 ```python
-# Standard creation
-person = {"name": "Alice", "age": 25}
-
-# Using dict()
-person2 = dict(name="Bob", age=30)
-
 # Empty dictionary
 empty = {}
+
+# Basic dictionary
+person = {
+    "name": "Alice",
+    "age": 25,
+    "city": "New York"
+}
+
+# Using dict() constructor
+person = dict(name="Alice", age=25)
 ```
 
-## Accessing Values
+---
+
+## 🔍 Accessing Values
 
 ```python
-user = {"name": "Alice", "age": 25}
+person = {"name": "Alice", "age": 25}
 
-# Access by key
-print(user["name"])   # Alice
-print(user["age"])    # 25
+# Using brackets (crashes if missing)
+print(person["name"])   # Alice
 
-# Using get() - safer (returns None if not found)
-print(user.get("name"))   # Alice
-print(user.get("city"))   # None (not an error!)
-print(user.get("city", "Unknown"))  # Unknown (default)
+# Using get() (safe, returns None or default)
+print(person.get("age"))       # 25
+print(person.get("phone"))     # None
+print(person.get("phone", "N/A"))  # "N/A"
 ```
 
-## Modifying Dictionaries
+---
+
+## 📝 Modifying Dictionaries
 
 ```python
-user = {"name": "Alice", "age": 25}
-
-# Change value
-user["age"] = 26
+person = {"name": "Alice"}
 
 # Add new key
-user["city"] = "NYC"
+person["age"] = 25
 
-# Remove key
-del user["name"]
-# or
-user.pop("name")
+# Update existing
+person["age"] = 26
+
+# Remove
+del person["age"]
+phone = person.pop("phone", "N/A")
 ```
 
-## Code Examples
+---
+
+## ⚙️ Iterating Over Dictionaries
 
 ```python
-# Example 1: Create and access
-car = {"brand": "Toyota", "model": "Camry", "year": 2022}
-print(car["brand"])  # Toyota
-print(car.get("year"))  # 2022
+data = {"a": 1, "b": 2, "c": 3}
 
-# Example 2: Update dictionary
-car["year"] = 2023
-car["color"] = "blue"
-print(car)  # {'brand': 'Toyota', 'model': 'Camry', 'year': 2023, 'color': 'blue'}
+for key in data:
+    print(key)           # a, b, c
 
-# Example 3: Get all keys/values
-user = {"name": "Alice", "age": 25, "city": "NYC"}
-print(user.keys())    # dict_keys(['name', 'age', 'city'])
-print(user.values()) # dict_values(['Alice', 25, 'NYC'])
-print(user.items())  # dict_items([('name', 'Alice'), ...])
+for value in data.values():
+    print(value)         # 1, 2, 3
 
-# Example 4: Loop through dictionary
-for key in user:
-    print(f"{key}: {user[key]}")
-
-# Example 5: Nested dictionary
-company = {
-    "employee": {
-        "name": "Alice",
-        "role": "Developer"
-    }
-}
-print(company["employee"]["name"])  # Alice
+for key, value in data.items():
+    print(f"{key}: {value}")  # a: 1, b: 2, c: 3
 ```
 
-## Dictionary Methods
+---
 
-| Method | Description |
-|--------|-------------|
-| .get(key) | Get value, return None if missing |
-| .keys() | Get all keys |
-| .values() | Get all values |
-| .items() | Get all key-value pairs |
-| .pop(key) | Remove key and return value |
-| .update(dict) | Add/update from another dict |
+## ⚠️ Common Mistakes
 
-## Key Takeaways
+```
+❌ Accessing missing keys
+   d = {"a": 1}
+   d["b"]   → KeyError
+   d.get("b")  ← Safe, returns None
 
-1. **Dictionaries use {}** with key: value pairs
-2. **Fast lookup** by key
-3. **Keys must be immutable** (strings, numbers, tuples)
-4. **Values can be anything**
-5. **.get()** is safer than []
+❌ Using mutable keys
+   d = {[1, 2]: "value"}  → TypeError (lists can't be keys)
+   Use tuples instead: {(1, 2): "value"}
 
-## Practice Exercise
+❌ Assuming order (Python 3.7+ preserves insertion order)
+   d = {"b": 2, "a": 1}
+   for k in d:  → b, a (order preserved in modern Python)
 
-1. Create a dictionary with your info (name, age, hobby)
-2. Add a new key
-3. Loop through and print all key-value pairs
-4. Use .get() with a default value
+❌ Modifying while iterating
+   for key in d:
+       del d[key]  → RuntimeError
+   Use list(d.keys()) if you must modify
+```
+
+---
+
+## 💻 Code Examples
+
+### 📌 Example 1 — Basic Dictionary
+
+```python
+person = {
+    "name": "Alice",
+    "age": 25,
+    "city": "New York"
+}
+
+print(person["name"])   # Alice
+print(person.get("age"))  # 25
+```
+
+### 📌 Example 2 — Adding and Removing
+
+```python
+student = {"name": "Bob"}
+
+student["age"] = 20
+student["grade"] = "A"
+print(student)  # {"name": "Bob", "age": 20, "grade": "A"}
+
+del student["grade"]
+print(student)  # {"name": "Bob", "age": 20}
+```
+
+### 📌 Example 3 — Iterating
+
+```python
+scores = {"Math": 95, "Science": 88, "History": 92}
+
+for subject, score in scores.items():
+    print(f"{subject}: {score}")
+```
+
+### 📌 Example 4 — Merging Dictionaries
+
+```python
+defaults = {"theme": "dark", "font": "12px"}
+user_prefs = {"theme": "light", "language": "en"}
+
+# Python 3.9+ merge operator
+merged = defaults | user_prefs
+print(merged)  # {"theme": "light", "font": "12px", "language": "en"}
+
+# Older Python
+merged = {**defaults, **user_prefs}
+```
+
+### 📌 Example 5 — Dictionary from Lists
+
+```python
+keys = ["name", "age", "city"]
+values = ["Alice", 25, "NY"]
+
+person = dict(zip(keys, values))
+print(person)  # {"name": "Alice", "age": 25, "city": "NY"}
+```
+
+### 📌 Example 6 — Nested Dictionaries
+
+```python
+company = {
+    "Alice": {"role": "Engineer", "salary": 80000},
+    "Bob": {"role": "Designer", "salary": 75000}
+}
+
+print(company["Alice"]["role"])  # Engineer
+```
+
+---
+
+## 🧪 Practice Exercise
+
+1. Create a dictionary with 3 of your friends' names and ages
+2. Add a new friend
+3. Print all names using a loop
+4. Use `get()` to safely access a missing key
+
+---
+
+## 📋 Key Takeaways
+
+| Concept | Takeaway |
+|---------|----------|
+| 🔑 **Keys** | Must be unique and immutable (str, int, tuple) |
+| 📝 **Values** | Can be any type, including lists or dicts |
+| ⚡ **Lookup** | Instant access — `d["key"]` is O(1) |
+| 🔍 **`get()`** | Safe access — returns None instead of crashing |
+| 🔄 **`items()`** | Best way to loop over keys and values together |
+
+---
+
+## 🔗 Further Reading
+
+- 📖 [Dictionaries — Official Docs](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
+- 🌟 [Dictionary Methods — docs](https://docs.python.org/3/library/stdtypes.html#dict)
+- 🔧 [Dict Comprehensions — docs](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)

@@ -1,118 +1,145 @@
-# Code examples from "Generators & Iterators" lesson
+"""
+Generators & Iterators (Lazy Evaluation)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Simple generator
-def count_up_to(max):
-    current = 1
-    while current <= max:
-        yield current
-        current += 1
-
-for num in count_up_to(3):
-    print(num)  # 1, 2, 3
-
-print("---")
-
-# Example 2: Generator vs list comparison
-def first_n(n):
-    nums = []
-    current = 1
-    while len(nums) < n:
-        nums.append(current)
-        current += 1
-    return nums  # Returns list
-
-def first_n_gen(n):
-    current = 1
+# Example 1 — Basic Generator
+def countdown(n):
     while n > 0:
-        yield current
-        current += 1
+        yield n
         n -= 1
 
-print(list(first_n(3)))   # [1, 2, 3]
-print(list(first_n_gen(3)))  # [1, 2, 3]
+for num in countdown(5):
+    print(num)  # 5, 4, 3, 2, 1
 
-print("---")
 
-# Example 3: Using next()
-def simple_gen():
-    yield "first"
-    yield "second"
-    yield "third"
+# Example 2 — Generator Expression
+# List comprehension (eager)
+squares_list = [x**2 for x in range(5)]
+print(squares_list)  # [0, 1, 4, 9, 16]
 
-gen = simple_gen()
-print(next(gen))  # first
-print(next(gen))  # second
-print(next(gen))  # third
+# Generator expression (lazy)
+squares_gen = (x**2 for x in range(5))
+print(next(squares_gen))  # 0
+print(next(squares_gen))  # 1
 
-print("---")
 
-# Example 4: Fibonacci generator
+# Example 3 — Memory Efficiency
+import sys
+
+# List — stores all 1M items
+big_list = [x for x in range(100_000)]
+print(f"List: {sys.getsizeof(big_list)} bytes")
+
+# Generator — stores only state
+big_gen = (x for x in range(100_000))
+print(f"Generator: {sys.getsizeof(big_gen)} bytes")
+
+
+# Example 4 — Infinite Generator
 def fibonacci():
     a, b = 0, 1
     while True:
         yield a
         a, b = b, a + b
 
+# Get first 10 fibonacci numbers
 fib = fibonacci()
-print("First 10 Fibonacci:")
 for _ in range(10):
     print(next(fib), end=" ")
 print()
 
-print("---")
 
-# Example 5: Generator expression
-gen = (x * 2 for x in range(5))
-print(list(gen))  # [0, 2, 4, 6, 8]
+# Example 5 — Pipeline with Generators
+def read_data():
+    for i in range(1, 6):
+        yield i
 
-# Equivalent list comprehension
-comp = [x * 2 for x in range(5)]
-print(comp)  # [0, 2, 4, 6, 8]
+def filter_odd(data):
+    for item in data:
+        if item % 2 == 1:
+            yield item
+
+def double(data):
+    for item in data:
+        yield item * 2
+
+# Chain generators
+pipeline = double(filter_odd(read_data()))
+print(list(pipeline))  # [2, 6, 10]
 
 
-# =====================
+# Example 6 — `yield from`
+def chain(*iterables):
+    for it in iterables:
+        yield from it
+
+result = list(chain([1, 2], [3, 4], [5, 6]))
+print(result)  # [1, 2, 3, 4, 5, 6]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # PRACTICE EXERCISE
-# =====================
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Create a generator that yields even numbers up to n
+# 2. Use a generator expression to sum squares of 1-100
+# 3. Create a generator that yields prime numbers
+# 4. Chain two generators together
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# 1. Create a simple generator with yield
-def my_generator():
-    yield "Apple"
-    yield "Banana"
-    yield "Cherry"
+# 1. Even numbers generator
+def evens_up_to(n):
+    for i in range(2, n + 1, 2):
+        yield i
 
-gen = my_generator()
-print(f"1: {next(gen)}")
-print(f"2: {next(gen)}")
-print(f"3: {next(gen)}")
+print(f"Evens: {list(evens_up_to(10))}")
 
-print("---")
+# 2. Sum squares with generator
+total = sum(x**2 for x in range(1, 101))
+print(f"Sum of squares: {total}")
 
-# 2. Loop through generator to get values
-def count_even(n):
-    for i in range(n * 2):
-        if i % 2 == 0:
-            yield i
+# 3. Prime numbers generator
+def primes():
+    found = []
+    num = 2
+    while True:
+        if all(num % p != 0 for p in found):
+            found.append(num)
+            yield num
+        num += 1
 
-print("Even numbers:")
-for num in count_even(5):
-    print(num, end=" ")
+prime_gen = primes()
+for _ in range(10):
+    print(next(prime_gen), end=" ")
 print()
 
-print("---")
+# 4. Chain generators
+def multiply_by(data, factor):
+    for item in data:
+        yield item * factor
 
-# 3. Create a fibonacci generator
-def fibonacci_gen(n):
-    a, b = 0, 1
-    count = 0
-    while count < n:
-        yield a
-        a, b = b, a + b
-        count += 1
+def add_offset(data, offset):
+    for item in data:
+        yield item + offset
 
-print("Fibonacci generator:")
-print(list(fibonacci_gen(10)))
+pipeline2 = add_offset(multiply_by(range(1, 4), 10), 5)
+print(f"Pipeline: {list(pipeline2)}")  # [15, 25, 35]
 
-# 4. Use generator expression
-result = (x**2 for x in range(1, 6))
-print("Generator expression:")
-print(list(result))
+# Try modifying it:
+# - Generator that reads a file line by line (memory efficient)
+import os
+
+def read_lines(filepath):
+    with open(filepath, "w") as f:
+        f.write("Line 1\nLine 2\nLine 3\n")
+
+    with open(filepath, "r") as f:
+        for line in f:
+            yield line.strip()
+
+for line in read_lines("gen_test.txt"):
+    print(f"  {line}")
+
+os.remove("gen_test.txt")

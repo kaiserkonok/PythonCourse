@@ -1,132 +1,233 @@
-# Loop Control: Advanced Use of break, continue, and pass
+# 🎛️ Loop Control: `break`, `continue`, and `else`
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/break-Exit%20Loop-red?style=flat-square" alt="break">
+  <img src="https://img.shields.io/badge/continue-Skip-orange?style=flat-square" alt="continue">
+  <img src="https://img.shields.io/badge/else-After%20Loop-green?style=flat-square" alt="else">
+</p>
 
-- Use break to exit loops early
-- Use continue to skip iterations
-- Use pass as a placeholder
+> ### 💡 Loop control statements are the steering wheel — they let you exit early, skip ahead, or detect when a loop finishes normally.
+> Learn how to fine-tune your loops with `break`, `continue`, and `else`.
 
-## The Three Control Statements
+---
 
-| Statement | What it does |
-|-----------|-------------|
-| break | Exit the loop completely |
-| continue | Skip this iteration |
-| pass | Do nothing (placeholder) |
+## 🎯 Learning Objectives
 
-## Using break
+By the end of this lesson, you will be able to:
+
+- ✅ Use `break` to exit a loop early
+- ✅ Use `continue` to skip to the next iteration
+- ✅ Use the loop `else` clause to detect normal completion
+
+---
+
+## 🧠 Mental Model: Traffic Control
+
+Think of loop controls like **traffic signals**:
+
+| Control | Signal | What it does |
+|---------|--------|--------------|
+| `break` | 🛑 Red Light | Stop immediately — exit the loop |
+| `continue` | 🟡 Yellow Light | Skip this one — go to next iteration |
+| `else` | ✅ Green Light | Loop finished normally — run cleanup |
+
+---
+
+## 📖 The Controls
+
+### 🔴 `break` — Exit Immediately
 
 ```python
-# Exit loop when condition is met
 for i in range(10):
     if i == 5:
-        break  # Stop at 5
-    print(i)
-# Output: 0 1 2 3 4
+        break
+    print(i)  # 0, 1, 2, 3, 4
 ```
 
-## Using continue
+> 💡 Use `break` when you found what you're looking for and don't need to continue.
+
+### 🟡 `continue` — Skip to Next
 
 ```python
-# Skip certain values
-for i in range(5):
-    if i == 2:
-        continue  # Skip 2
-    print(i)
-# Output: 0 1 3 4 (skips 2)
+for i in range(10):
+    if i % 2 == 0:
+        continue
+    print(i)  # 1, 3, 5, 7, 9 (skips evens)
 ```
 
-## Using pass
+> 💡 Use `continue` to skip unwanted iterations without exiting the loop.
+
+### ✅ `else` — After Normal Completion
 
 ```python
-# pass does nothing - placeholder for future code
-for i in range(5):
-    pass  # Will implement later
-
-print("Done")
+for item in items:
+    if item == target:
+        print("Found it!")
+        break
+else:
+    print("Not found")  # Only runs if loop didn't break!
 ```
 
-## Common Patterns
+> 💡 The `else` block runs only if the loop finished **without** hitting `break`.
+
+---
+
+## 📊 When to Use Each
+
+| Scenario | Control | Why |
+|----------|---------|-----|
+| Search and found | `break` | Stop searching |
+| Filter out bad data | `continue` | Skip invalid items |
+| Verify all items | `else` | Confirm no breaks occurred |
+| User quit early | `break` | Exit gracefully |
+| Skip header row | `continue` | Process data only |
+
+---
+
+## ⚠️ Common Mistakes
+
+```
+❌ Confusing loop `else` with `if/else`
+   for x in items:
+       if condition:
+           break
+   else:
+       # This runs if loop completed WITHOUT break
+       # NOT "if condition was False"
+
+❌ Using break when continue is needed
+   for x in data:
+       if x is invalid:
+           break      ← Stops entire loop!
+           continue   ← Skips just this item
+
+❌ Forgetting break in search loops
+   for item in items:
+       if item == target:
+           print("Found")
+           # Missing break → keeps checking rest of items
+
+❌ Using else without break
+   for x in items:
+       process(x)
+   else:
+       # Always runs — same as putting code after the loop
+       # Only useful when combined with break
+```
+
+---
+
+## 💻 Code Examples
+
+### 📌 Example 1 — `break` in a For Loop
 
 ```python
-# Find first match, then stop
-numbers = [1, 2, 3, 4, 5]
+# Search for a number
+target = 7
+numbers = [1, 3, 5, 7, 9, 11]
 
 for num in numbers:
-    if num > 3:
-        print(f"Found: {num}")
+    if num == target:
+        print(f"Found {target}!")
         break
-
-# Skip even numbers
-for i in range(10):
-    if i % 2 == 0:
-        continue
-    print(f"Odd: {i}")
-
-# Empty function body (can't have empty def)
-def my_function():
-    pass  # TODO: implement later
+    print(f"Checking {num}...")
 ```
 
-## Code Examples
+### 📌 Example 2 — `break` in a While Loop
 
 ```python
-# Example 1: break - find first match
-fruits = ["apple", "banana", "cherry", "date"]
-
-for fruit in fruits:
-    if fruit == "cherry":
-        print(f"Found {fruit}!")
-        break
-    else:
-        print(f"Not {fruit}")
-
-# Example 2: continue - skip even numbers
-for i in range(10):
-    if i % 2 == 0:
-        continue
-    print(i)  # 1 3 5 7 9
-
-# Example 3: pass - placeholder
-class MyClass:
-    pass  # Will add methods later
-
-# Example 4: break in while loop
-count = 0
-
+# Keep asking until user enters "quit"
 while True:
-    print(count)
-    count += 1
-    if count >= 5:
+    command = input("Enter command (or 'quit' to exit): ")
+    if command == "quit":
+        print("Goodbye!")
         break
-
-# Example 5: continue in while loop
-count = 0
-
-while count < 5:
-    count += 1
-    if count == 3:
-        continue
-    print(count)  # 1 2 4 5 (skips 3)
+    print(f"Running: {command}")
 ```
 
-## Summary: When to Use
+### 📌 Example 3 — `continue` in Action
 
-- **break**: Exit loop when found what you're looking for
-- **continue**: Skip unwanted items
-- **pass**: Need statement but no action yet
+```python
+# Process only odd numbers
+for i in range(10):
+    if i % 2 == 0:
+        continue  # Skip even numbers
+    print(f"Processing {i}")
+```
 
-## Key Takeaways
+### 📌 Example 4 — `continue` to Skip Errors
 
-1. **break** exits the loop entirely
-2. **continue** skips to next iteration
-3. **pass** is a placeholder
-4. Use break when searching for something
-5. Use continue to filter items
+```python
+# Process data, skip invalid entries
+data = [10, 0, 20, "bad", 30]
 
-## Practice Exercise
+for item in data:
+    try:
+        result = 100 / item
+        print(f"100 / {item} = {result}")
+    except (ZeroDivisionError, TypeError):
+        print(f"Skipping {item} (invalid)")
+        continue
+```
 
-1. Find the first number divisible by 7 from 1-50
-2. Print all numbers 1-10 except multiples of 3
-3. Use pass in a for loop that prints nothing
-4. Combine break and continue in one loop
+### 📌 Example 5 — `else` with `break`
+
+```python
+# Check if a number is prime
+number = 17
+
+for i in range(2, number):
+    if number % i == 0:
+        print(f"{number} is not prime (divisible by {i})")
+        break
+else:
+    # Only runs if loop didn't break
+    print(f"{number} is prime!")
+```
+
+### 📌 Example 6 — Combining All Three
+
+```python
+# Process a list, skip negatives, stop at 999
+numbers = [5, -2, 10, -8, 15, 999, 20]
+
+for num in numbers:
+    if num == 999:
+        print("Found sentinel value, stopping!")
+        break
+    if num < 0:
+        print(f"Skipping negative: {num}")
+        continue
+    print(f"Processing: {num}")
+else:
+    print("All numbers processed (no 999 found)")
+```
+
+---
+
+## 🧪 Practice Exercise
+
+1. Use `break` to stop a loop when you find a specific number
+2. Use `continue` to skip numbers divisible by 3
+3. Use `else` to detect if a search failed
+4. Combine `break` and `continue` in one loop
+
+---
+
+## 📋 Key Takeaways
+
+| Concept | Takeaway |
+|---------|----------|
+| 🛑 **`break`** | Exits the loop immediately — no more iterations |
+| 🟡 **`continue`** | Skips to next iteration — rest of loop body is skipped |
+| ✅ **`else`** | Runs when loop finishes normally (no `break`) |
+| 🔍 **Search pattern** | `for/break/else` is idiomatic for "find or not found" |
+| ⚠️ **Nested loops** | `break` only exits the innermost loop |
+
+---
+
+## 🔗 Further Reading
+
+- 📖 [Break and Continue — Official Docs](https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops)
+- 🌟 [Python Loop Else — Real Python](https://realpython.com/python-loop-else/)
+- 🧠 [Control Flow — W3Schools](https://www.w3schools.com/python/python_while_loops.asp)

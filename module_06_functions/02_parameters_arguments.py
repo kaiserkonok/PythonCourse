@@ -1,55 +1,102 @@
-# Code examples from "Parameters & Arguments" lesson
+"""
+Parameters & Arguments (Flexible Function Inputs)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Positional arguments
-def add(a, b, c):
+# Example 1 — Positional Arguments
+def describe(name, age, city):
+    print(f"{name} is {age}, lives in {city}")
+
+describe("Alice", 25, "NY")  # Order matters!
+
+
+# Example 2 — Keyword Arguments
+describe(age=25, city="NY", name="Alice")  # Order doesn't matter!
+
+
+# Example 3 — Default Values
+def greet(name, greeting="Hello"):
+    print(f"{greeting}, {name}!")
+
+greet("Alice")           # Hello, Alice!
+greet("Bob", "Hi")       # Hi, Bob!
+
+
+# Example 4 — *args (Variable Positional)
+def total(*numbers):
+    return sum(numbers)
+
+print(total(1, 2, 3))      # 6
+print(total(10, 20, 30, 40))  # 100
+
+
+# Example 5 — **kwargs (Variable Keyword)
+def build_profile(**info):
+    for key, value in info.items():
+        print(f"{key}: {value}")
+
+build_profile(name="Alice", age=25, job="Dev")
+
+
+# Example 6 — Combining All
+def full_example(a, b, *args, x=10, y=20, **kwargs):
+    print(f"Positional: {a}, {b}")
+    print(f"Extra: {args}")
+    print(f"Keywords: {x}, {y}")
+    print(f"Extra kwargs: {kwargs}")
+
+full_example(1, 2, 3, 4, 5, x=100, y=200, z=300)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRACTICE EXERCISE
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Create a function with default parameters
+# 2. Write a function that takes *args and returns their product
+# 3. Use **kwargs to create a flexible config function
+# 4. Combine positional, *args, and **kwargs
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# 1. Function with defaults
+def create_user(name, role="guest", active=True):
+    return {"name": name, "role": role, "active": active}
+
+print(create_user("Alice"))
+print(create_user("Bob", "admin", False))
+
+# 2. Product of *args
+def product(*nums):
+    result = 1
+    for n in nums:
+        result *= n
+    return result
+
+print(f"Product: {product(2, 3, 4)}")
+
+# 3. Flexible config
+def setup_config(**settings):
+    defaults = {"theme": "dark", "font": "12px"}
+    defaults.update(settings)
+    return defaults
+
+config = setup_config(theme="light", lang="en")
+print(f"Config: {config}")
+
+# 4. Combine all
+def order(item, *sides, drink="water", **extras):
+    print(f"Main: {item}")
+    print(f"Sides: {sides}")
+    print(f"Drink: {drink}")
+    print(f"Extras: {extras}")
+
+order("Burger", "Fries", "Salad", drink="Coke", tip=5)
+
+# Try modifying it:
+# - Use * to unpack a list into arguments
+def add_three(a, b, c):
     return a + b + c
 
-print(add(1, 2, 3))  # 6
-
-# Example 2: Keyword arguments
-def create_user(name, age, city):
-    return f"{name}, {age}, {city}"
-
-# Order doesn't matter with keywords
-print(create_user(city="NYC", name="Alice", age=25))
-print(create_user(name="Bob", city="LA", age=30))
-
-# Example 3: Default parameters
-def power(base, exponent=2):
-    return base ** exponent
-
-print(power(3))     # 9 (exponent defaults to 2)
-print(power(3, 3))  # 27
-
-# Example 4: Combining positional and keyword
-def describe(name, age, role="user"):
-    return f"{name} is {age} years old, role: {role}"
-
-print(describe("Alice", 25))                  # role is "user"
-print(describe("Bob", 30, role="admin"))      # role is "admin"
-print(describe(age=35, name="Charlie"))       # mixed
-
-# Example 5: *args and **kwargs
-def print_all(*args, **kwargs):
-    print(f"Args: {args}")
-    print(f"Kwargs: {kwargs}")
-
-print_all(1, 2, 3, name="Alice", age=25)
-
-
-# =====================
-# PRACTICE EXERCISE
-# =====================
-
-# 1. Create a function with 3 parameters, one with default
-def create_profile(name, age, city="Unknown"):
-    return f"{name}, {age}, {city}"
-
-# 2. Call with positional arguments only
-print(create_profile("Alice", 25, "NYC"))
-
-# 3. Call with keyword arguments only
-print(create_profile(name="Bob", age=30, city="LA"))
-
-# 4. Mix both types
-print(create_profile("Charlie", city="Tokyo", age=35))
+numbers = [1, 2, 3]
+print(f"Unpacked sum: {add_three(*numbers)}")

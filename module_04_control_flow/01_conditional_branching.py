@@ -1,61 +1,30 @@
-# Code examples from "Conditional Branching" lesson
+"""
+Conditional Branching (Making Decisions)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Basic if
-is_raining = True
+# Example 1 — Simple `if`
+age = 20
 
-if is_raining:
-    print("Bring an umbrella!")
+if age >= 18:
+    print("You are an adult")
+    print("You can vote")
 
-# Example 2: if-else
+print("This always runs")
+
+
+# Example 2 — `if/else`
 temperature = 30
 
 if temperature > 25:
-    print("It's hot!")
+    print("It's warm outside")
 else:
-    print("It's comfortable")
-
-# Example 3: if-elif-else
-age = 25
-
-if age < 13:
-    print("Child")
-elif age < 20:
-    print("Teenager")
-elif age < 60:
-    print("Adult")
-else:
-    print("Senior")
-
-# Example 4: Nested conditions
-age = 25
-has_money = True
-
-if age >= 18:
-    if has_money:
-        print("You can buy it!")
-    else:
-        print("You can't afford it")
-else:
-    print("Too young")
-
-# Example 5: Multiple elif
-day = "Monday"
-
-if day == "Monday":
-    print("Start of week")
-elif day == "Friday":
-    print("End of week")
-elif day == "Saturday" or day == "Sunday":
-    print("Weekend!")
-else:
-    print("Midweek")
+    print("It's cold outside")
 
 
-# =====================
-# PRACTICE EXERCISE
-# =====================
-
-# 1. Create a grading system (A, B, C, D, F) using if-elif-else
+# Example 3 — `if/elif/else`
 score = 85
 
 if score >= 90:
@@ -69,23 +38,102 @@ elif score >= 60:
 else:
     grade = "F"
 
-print(f"Score {score} = Grade {grade}")
+print(f"Grade: {grade}")  # B
 
-# 2. Check if a number is positive, negative, or zero
-number = -5
 
-if number > 0:
+# Example 4 — Nested Conditions
+age = 25
+has_id = True
+
+if age >= 18:
+    if has_id:
+        print("Entry allowed")
+    else:
+        print("Bring ID")
+else:
+    print("Too young")
+
+
+# Example 5 — Multiple Conditions
+age = 25
+is_student = True
+
+# AND
+if age < 30 and is_student:
+    print("Student discount available")
+
+# OR
+if age < 18 or age > 65:
+    print("Special pricing")
+
+
+# Example 6 — Ternary Operator (One-Liner)
+# Traditional
+age = 20
+if age >= 18:
+    status = "adult"
+else:
+    status = "minor"
+
+# One-liner
+status = "adult" if age >= 18 else "minor"
+print(f"Status: {status}")  # adult
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRACTICE EXERCISE
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Write an if/else to check if a number is even or odd
+# 2. Use if/elif/else to categorize age: child (0-12), teen (13-19), adult (20-64), senior (65+)
+# 3. Write a nested if to check if a number is positive, and if so, whether it's > 10
+# 4. Convert an if/else to a ternary operator
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# 1. Even or odd
+num = 15
+if num % 2 == 0:
+    print(f"{num} is even")
+else:
+    print(f"{num} is odd")
+
+# 2. Age category
+person_age = 30
+if person_age <= 12:
+    category = "child"
+elif person_age <= 19:
+    category = "teen"
+elif person_age <= 64:
+    category = "adult"
+else:
+    category = "senior"
+print(f"Category: {category}")
+
+# 3. Nested if
+x = 15
+if x > 0:
     print("Positive")
-elif number < 0:
-    print("Negative")
+    if x > 10:
+        print("Greater than 10")
+    else:
+        print("Less than or equal to 10")
 else:
-    print("Zero")
+    print("Non-positive")
 
-# 3. Create a simple login check with username and password
-username = "admin"
-password = "password123"
+# 4. Ternary operator
+temperature = 30
+weather = "warm" if temperature > 25 else "cold"
+print(f"Weather: {weather}")
 
-if username == "admin" and password == "password123":
-    print("Login successful!")
+# Try modifying it:
+# - Add validation for negative age
+age_input = -5
+if age_input < 0:
+    print("Invalid age!")
+elif age_input <= 12:
+    print("Child")
+elif age_input <= 19:
+    print("Teen")
+elif age_input <= 64:
+    print("Adult")
 else:
-    print("Login failed")
+    print("Senior")

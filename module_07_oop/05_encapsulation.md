@@ -1,180 +1,239 @@
-# Encapsulation: Using Underscores to Manage Data Access
+# 🔐 Encapsulation: Protecting Your Data
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/private-_%20Prefix-blue?style=flat-square" alt="private">
+  <img src="https://img.shields.io/badge/property-Getter%2FSetter-green?style=flat-square" alt="property">
+  <img src="https://img.shields.io/badge/Protect-Data%20Safety-orange?style=flat-square" alt="Protect">
+</p>
 
-- Understand encapsulation
-- Use public, protected, and private
-- Create getters and setters
+> ### 💡 Encapsulation is like a capsule — the inside is protected from the outside world. You control how data is accessed and modified.
+> Learn how to hide internal details and expose safe interfaces.
 
-## What is Encapsulation?
+---
 
-Encapsulation restricts **direct access** to attributes:
+## 🎯 Learning Objectives
 
-- Keeps data safe from outside changes
-- Controls how data is modified
-- Uses underscores to indicate visibility
+By the end of this lesson, you will be able to:
 
-## Underscore Conventions
+- ✅ Use private attributes with `_` and `__` prefixes
+- ✅ Create getter and setter methods
+- ✅ Use the `@property` decorator for clean access
 
-| Prefix | Type | Meaning |
-|--------|------|---------|
-| `name` | Public | Accessible anywhere |
-| `_name` | Protected | Don't access directly (convention) |
-| `__name` | Private | Name mangled (harder to access) |
+---
+
+## 🧠 Mental Model: An ATM Machine
+
+Encapsulation is like an **ATM**:
+
+```
+🏧 ATM (Object)
+   ├── 💵 Cash (Private — you can't reach inside)
+   ├── 🔢 Keypad (Public — you interact with it)
+   └── 🖥️ Screen (Public — shows info)
+```
+
+You don't touch the cash directly — you use the keypad (methods) to request withdrawals safely.
+
+---
+
+## 📖 Access Levels
+
+| Prefix | Access | Convention |
+|--------|--------|------------|
+| `name` | Public | Anyone can access |
+| `_name` | Protected | "Internal use" (convention only) |
+| `__name` | Private | Name-mangled (harder to access) |
+
+---
+
+## 📊 Getters and Setters
 
 ```python
 class BankAccount:
     def __init__(self, balance):
-        self.balance = balance        # Public
-        self._pin = 1234          # Protected (convention)
-        self.__secret = "xray"   # Private (name mangled)
+        self._balance = balance  # Protected
 
-account = BankAccount(1000)
-print(account.balance)   # 1000 - accessible
-# print(account._pin)    # Works but discouraged
-# print(account.__secret) # Error!
+    def get_balance(self):
+        return self._balance
+
+    def deposit(self, amount):
+        if amount > 0:
+            self._balance += amount
 ```
 
-## Getters and Setters
+---
+
+## ⚠️ Common Mistakes
+
+```
+❌ Thinking _ means truly private
+   _name is just a convention — Python doesn't enforce it!
+   It says "this is internal, don't touch"
+
+❌ Overusing __name
+   __name triggers name mangling (__ClassName__name)
+   Usually just use _name unless you really need protection
+
+❌ No validation in setters
+   def set_age(self, age):
+       self._age = age  ← No check for negative values!
+   if age >= 0: self._age = age  ← Correct
+
+❌ Exposing internal data directly
+   return self._data  ← Returns reference, caller can modify!
+   return self._data.copy()  ← Returns safe copy
+```
+
+---
+
+## 💻 Code Examples
+
+### 📌 Example 1 — Public vs Private
+
+```python
+class Account:
+    def __init__(self, owner, balance):
+        self.owner = owner      # Public
+        self._balance = balance # Protected (internal)
+
+acc = Account("Alice", 1000)
+print(acc.owner)      # OK — public
+print(acc._balance)   # Works, but shouldn't do it!
+```
+
+### 📌 Example 2 — Getters and Setters
 
 ```python
 class Person:
-    def __init__(self, name):
-        self._name = name  # Protected attribute
-    
-    # Getter
-    @property
-    def name(self):
-        return self._name
-    
-    # Setter
-    @name.setter
-    def name(self, value):
-        if len(value) > 0:
-            self._name = value
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
 
-person = Person("Alice")
-print(person.name)   # Alice (getter)
-person.name = "Bob"  # Bob (setter)
-print(person.name)
+    def get_age(self):
+        return self._age
+
+    def set_age(self, age):
+        if 0 <= age <= 150:
+            self._age = age
+        else:
+            print("Invalid age!")
+
+p = Person("Alice", 25)
+p.set_age(30)
+print(p.get_age())  # 30
+p.set_age(-5)       # Invalid age!
 ```
 
-## Property Decorator
+### 📌 Example 3 — @property Decorator
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, value):
+        if 0 <= value <= 150:
+            self._age = value
+        else:
+            raise ValueError("Invalid age")
+
+p = Person("Alice", 25)
+print(p.age)   # 25 (like attribute access)
+p.age = 30     # Calls setter
+```
+
+### 📌 Example 4 — Read-Only Properties
+
+```python
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @property
+    def area(self):
+        return 3.14 * self._radius ** 2
+
+    @property
+    def diameter(self):
+        return self._radius * 2
+
+c = Circle(5)
+print(f"Radius: {c.radius}, Area: {c.area}, Diameter: {c.diameter}")
+# c.radius = 10  ← AttributeError (no setter)
+```
+
+### 📌 Example 5 — Computed Properties
 
 ```python
 class Temperature:
     def __init__(self, celsius):
         self._celsius = celsius
-    
-    @property
-    def celsius(self):
-        return self._celsius
-    
-    @celsius.setter
-    def celsius(self, value):
-        if value < -273.15:
-            raise ValueError("Too cold!")
-        self._celsius = value
-    
+
     @property
     def fahrenheit(self):
-        return self._celsius * 9/5 + 32
+        return (self._celsius * 9/5) + 32
 
-temp = Temperature(25)
-print(temp.fahrenheit)  # 77.0
+    @fahrenheit.setter
+    def fahrenheit(self, value):
+        self._celsius = (value - 32) * 5/9
+
+t = Temperature(100)
+print(f"{t._celsius}°C = {t.fahrenheit}°F")
+t.fahrenheit = 212
+print(f"{t._celsius}°C = {t.fahrenheit}°F")
 ```
 
-## Code Examples
+### 📌 Example 6 — Data Hiding
 
 ```python
-# Example 1: Protected attribute (convention)
-class Student:
-    def __init__(self, name):
-        self._name = name  # Protected
-    
-    def get_name(self):
-        return self._name
+class Database:
+    def __init__(self):
+        self.__password = "secret"  # Private (name-mangled)
 
-s = Student("Alice")
-print(s.get_name())  # Alice
+    def get_password(self):
+        # In real code, verify permissions here
+        return self.__password
 
-# Example 2: Private attribute (name mangling)
-class Secret:
-    def __init__(self, code):
-        self.__code = code
-
-s = Secret(1234)
-# print(s.__code)  # AttributeError!
-print(s._Secret__code)  # Still accessible but hidden
-
-# Example 3: Using property
-class Rectangle:
-    def __init__(self, width):
-        self.__width = width
-    
-    @property
-    def width(self):
-        return self.__width
-    
-    @width.setter
-    def width(self, value):
-        if value > 0:
-            self.__width = value
-
-r = Rectangle(5)
-print(r.width)  # 5
-
-# Example 4: Read-only property
-class Circle:
-    def __init__(self, radius):
-        self._radius = radius
-    
-    @property
-    def area(self):
-        return 3.14 * self._radius ** 2
-
-c = Circle(5)
-print(c.area)  # 78.5
-# c.area = 100  # AttributeError!
-
-# Example 5: Validation in setter
-class Person:
-    def __init__(self, age):
-        self.age = age
-    
-    @property
-    def age(self):
-        return self._age
-    
-    @age.setter
-    def age(self, value):
-        if value < 0:
-            raise ValueError("Age cannot be negative")
-        self._age = value
-
-p = Person(25)
-print(p.age)  # 25
-p.age = 30
-print(p.age)  # 30
+db = Database()
+print(db.get_password())  # "secret"
+# print(db.__password)    ← AttributeError
 ```
 
-## When to Use Encapsulation
+---
 
-- **Protect data** - prevent invalid values
-- **Control access** - decide when/how
-- **Clean API** - hide implementation details
+## 🧪 Practice Exercise
 
-## Key Takeaways
+1. Create a class with a private attribute
+2. Add a getter and setter with validation
+3. Convert to use `@property`
+4. Create a read-only computed property
 
-1. **Protected (_name)**: Convention, don't access directly
-2. **Private (__name)**: Name mangled, use getter/setter
-3. **@property**: Define getter
-4. **@name.setter**: Define setter with validation
-5. **Encapsulation** protects data integrity
+---
 
-## Practice Exercise
+## 📋 Key Takeaways
 
-1. Create a class with private attribute
-2. Add getter using @property
-3. Add setter with validation
-4. Try accessing directly (see how it fails)
+| Concept | Takeaway |
+|---------|----------|
+| 🔒 **`_name`** | Protected — convention, not enforced |
+| 🔒 **`__name`** | Private — name-mangled by Python |
+| 🏷️ **`@property`** | Clean getter/setter syntax |
+| 🛡️ **Validation** | Use setters to enforce rules |
+| 📦 **Encapsulation** | Hide internals, expose safe interface |
+
+---
+
+## 🔗 Further Reading
+
+- 📖 [Private Variables — Official Docs](https://docs.python.org/3/tutorial/classes.html#private-variables)
+- 🌟 [@property — Real Python](https://realpython.com/python-property/)
+- 🔧 [Descriptors — docs](https://docs.python.org/3/howto/descriptor.html)

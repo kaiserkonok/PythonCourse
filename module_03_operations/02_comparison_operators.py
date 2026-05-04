@@ -1,56 +1,116 @@
-# Code examples from "Comparison Operators" lesson
+"""
+Comparison Operators (Asking Questions)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Basic comparisons
+# Example 1 — Basic Comparisons
 a = 10
-b = 20
-print(a == b)    # False
-print(a != b)    # True
-print(a > b)     # False
-print(a < b)     # True
-print(a >= 10)   # True
-print(a <= 10)   # True
+b = 5
 
-# Example 2: String comparisons
+print(f"{a} > {b}: {a > b}")    # True
+print(f"{a} < {b}: {a < b}")    # False
+print(f"{a} == {b}: {a == b}")  # False
+print(f"{a} != {b}: {a != b}")  # True
+
+
+# Example 2 — Comparison with Variables
+age = 20
+minimum_age = 18
+
+can_vote = age >= minimum_age
+print(f"Can vote: {can_vote}")  # True
+
+score = 95
+passing_score = 50
+
+passed = score >= passing_score
+print(f"Passed: {passed}")  # True
+
+
+# Example 3 — String Comparisons
 name1 = "Alice"
-name2 = "alice"
-print(name1 == name2)     # False (case-sensitive)
-print(name1.lower() == name2)  # True
+name2 = "Bob"
 
-# Example 3: Mixed type comparison
-print(10 == "10")        # False (int vs str)
-print(10 == 10.0)       # True (int vs float)
+print(f"{name1} < {name2}: {name1 < name2}")  # True (alphabetical)
+print(f"{name1} == {name2}: {name1 == name2}")  # False
 
-# Example 4: In comparisons
-text = "Hello Python"
-print("Python" in text)  # True
-print("python" in text)  # False (case-sensitive)
+# Case sensitivity matters
+print(f"'python' == 'Python': {'python' == 'Python'}")  # False
 
-# Example 5: Checking ranges
-score = 75
-if 0 <= score <= 100:
-    print("Valid score")
-else:
-    print("Invalid score")
+# Case-insensitive comparison
+print(f"'python'.lower() == 'Python'.lower(): {'python'.lower() == 'Python'.lower()}")  # True
 
 
-# =====================
+# Example 4 — Chained Comparisons
+x = 15
+
+# Traditional way
+print(x > 10 and x < 20)   # True
+
+# Pythonic chained way
+print(10 < x < 20)         # True
+
+# Check if in range
+print(0 <= x <= 100)       # True (percentage check)
+
+
+# Example 5 — Comparing Different Types
+# Numbers vs Strings — never equal
+print(5 == "5")     # False
+print(5 != "5")     # True
+
+# Booleans are special — True is 1, False is 0
+print(True == 1)    # True
+print(False == 0)   # True
+print(True > 0)     # True
+
+
+# Example 6 — The `is` vs `==` Gotcha
+# == checks if values are equal
+# is checks if they are the exact same object in memory
+
+a = [1, 2, 3]
+b = [1, 2, 3]
+
+print(a == b)   # True (same values)
+print(a is b)   # False (different objects!)
+
+# For simple values, Python optimizes and they may be the same
+x = 10
+y = 10
+print(x == y)   # True
+print(x is y)   # True (small integers are cached)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # PRACTICE EXERCISE
-# =====================
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Compare two numbers: 25 and 18 — is the first greater?
+# 2. Check if your name equals "Alice"
+# 3. Use a chained comparison to check if a number is between 1 and 100
+# 4. Compare two strings case-insensitively
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# 1. Create variables for your age and a voting age (18)
-my_age = 25
-voting_age = 18
+# 1. Compare numbers
+print(f"25 > 18: {25 > 18}")
 
-# 2. Check if you can vote
-can_vote = my_age >= voting_age
-print(f"Can vote: {can_vote}")
+# 2. Check name
+my_name = "Alice"
+print(f"Name is Alice: {my_name == 'Alice'}")
 
-# 3. Check if two strings are equal
-string1 = "hello"
-string2 = "hello"
-print(f"Strings equal: {string1 == string2}")
+# 3. Chained comparison
+num = 50
+print(f"1 <= {num} <= 100: {1 <= num <= 100}")
 
-# 4. Use chained comparison to check if a number is between 1 and 100
-number = 50
-is_in_range = 1 <= number <= 100
-print(f"Number {number} in range 1-100: {is_in_range}")
+# 4. Case-insensitive comparison
+str1 = "Python"
+str2 = "python"
+print(f"Case-insensitive equal: {str1.lower() == str2.lower()}")
+
+# Try modifying it:
+# - Compare the length of two strings
+name_a = "Alice"
+name_b = "Bob"
+print(f"Length of '{name_a}' < length of '{name_b}': {len(name_a) < len(name_b)}")

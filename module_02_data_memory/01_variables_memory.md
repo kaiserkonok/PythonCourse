@@ -1,16 +1,27 @@
-# Variables & Memory Labels: How Data is Stored and Referenced
+# 🏷️ Variables & Memory Labels: How Data is Stored and Referenced
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/Concept-Variables-blue?style=flat-square" alt="Variables">
+  <img src="https://img.shields.io/badge/Convention-snake__case-green?style=flat-square" alt="snake_case">
+  <img src="https://img.shields.io/badge/Skill-Foundational-orange?style=flat-square" alt="Foundational">
+</p>
 
-By the end of this lesson, you will be able to:
-
-- Understand what variables are and how they work in memory
-- Follow Python's naming conventions like a pro
-- Use the assignment operator correctly (and avoid common mistakes)
+> ### 💡 Variables are not boxes — they're labels. When you write x = 10, you stick a label called "x" onto the number 10.
+> Learn how Python stores data in memory and how to name your variables like a pro.
 
 ---
 
-## Mental Model: Post-it Notes
+## 🎯 Learning Objectives
+
+By the end of this lesson, you will be able to:
+
+- ✅ Understand what variables are and how they work in memory
+- ✅ Follow Python's naming conventions like a pro
+- ✅ Use the assignment operator correctly (and avoid common mistakes)
+
+---
+
+## 🧠 Mental Model: Post-it Notes
 
 Variables in Python are **not boxes** — they're **labels** or **post-it notes**.
 
@@ -36,9 +47,11 @@ When you reassign `x = 20`:
    10  ← Old data (waiting to be cleaned up)
 ```
 
+> 💡 **Key insight:** Variables are labels that point to data. They're not containers.
+
 ---
 
-## Creating Variables
+## 📖 Creating Variables
 
 In Python, you create a variable by **assigning** a value to a name using `=`:
 
@@ -52,32 +65,32 @@ The `=` symbol is called the **assignment operator**. It means:
 
 > "Take the value on the right and attach the name on the left."
 
-It does NOT mean "equals" like in math.
+> ⚠️ It does NOT mean "equals" like in math.
 
 ---
 
-## Variable Naming Rules
+## 📝 Variable Naming Rules
 
 Python enforces some rules — and conventions — for naming variables.
 
-### Rules (Python will crash if you break these)
+### 🚨 Rules (Python will crash if you break these)
 
-| Rule | Correct | Incorrect |
-|------|---------|-----------|
+| Rule | ✅ Correct | ❌ Incorrect |
+|------|-----------|-------------|
 | Start with letter or underscore | `name`, `_value` | `2name` |
 | Only letters, numbers, underscores | `user_name` | `user-name` |
 | Can't be a Python keyword | `score` | `if`, `for`, `while` |
 | No spaces | `my_value` | `my value` |
 
-### Conventions (Python won't crash — but other developers will judge you)
+### 💡 Conventions (Python won't crash — but other developers will judge you)
 
 | Style | Example | Pythonic? |
 |-------|---------|-----------|
-| snake_case | `user_name`, `first_name` | ✅ Yes — this is Python convention |
-| camelCase | `userName`, `firstName` | ⚠️ Less Pythonic |
-| PascalCase | `UserName`, `FirstName` | ⚠️ Only for class names |
+| 🟢 snake_case | `user_name`, `first_name` | ✅ Yes — this is Python convention |
+| 🟡 camelCase | `userName`, `firstName` | ⚠️ Less Pythonic |
+| 🔴 PascalCase | `UserName`, `FirstName` | ⚠️ Only for class names |
 
-### What's a Good Variable Name?
+### 🎯 What's a Good Variable Name?
 
 ```python
 # ❌ Bad — what does 'x' even mean?
@@ -91,7 +104,7 @@ name = "Alice"
 
 ---
 
-## Common Mistakes
+## ⚠️ Common Mistakes
 
 ```
 ❌ Using a variable before defining it
@@ -111,9 +124,9 @@ name = "Alice"
 
 ---
 
-## Code Examples
+## 💻 Code Examples
 
-### Example 1 — Creating Variables
+### 📌 Example 1 — Creating Variables
 
 ```python
 # Create a variable and print it
@@ -121,7 +134,7 @@ player_name = "Mario"
 print(player_name)  # Output: Mario
 ```
 
-### Example 2 — Reassigning Variables
+### 📌 Example 2 — Reassigning Variables
 
 ```python
 # Variables can change their value
@@ -132,7 +145,7 @@ age = 26          # Reassign the variable
 print(age)       # 26 (old value is gone)
 ```
 
-### Example 3 — Multiple Variables
+### 📌 Example 3 — Multiple Variables
 
 ```python
 # Multiple variables in one script
@@ -142,7 +155,7 @@ z = x + y
 print(z)  # Output: 15
 ```
 
-### Example 4 — Multiple Assignment
+### 📌 Example 4 — Multiple Assignment
 
 ```python
 # Python lets you assign multiple variables at once
@@ -156,7 +169,7 @@ x, y = y, x      # No temp variable needed
 print(f"x = {x}, y = {y}")  # x = 20, y = 10
 ```
 
-### Example 5 — Checking a Variable's Type
+### 📌 Example 5 — Checking a Variable's Type
 
 ```python
 # Every variable has a type — Python tracks it for you
@@ -171,7 +184,7 @@ print(type(is_student))  # <class 'bool'>
 
 ---
 
-## Practice Exercise
+## 🧪 Practice Exercise
 
 Create variables for:
 
@@ -184,18 +197,20 @@ Print them all on one line using an f-string.
 
 ---
 
-## Key Takeaways
+## 📋 Key Takeaways
 
-- **Variables are labels** — they point to data, they're not containers
-- **The `=` operator** assigns a value to a name (it's not mathematical equality)
-- **Snake_case is the Python convention** — use `user_name`, not `userName`
-- **Good names matter** — `age = 25` is clearer than `x = 25`
-- **Reassignment changes** the label's target — the old value is cleaned up
+| Concept | Takeaway |
+|---------|----------|
+| 🏷️ **Variables are labels** | They point to data, they're not containers |
+| 🟰 **The `=` operator** | Assigns a value to a name (it's not mathematical equality) |
+| 🐍 **Snake_case is the Python convention** | Use `user_name`, not `userName` |
+| 🎯 **Good names matter** | `age = 25` is clearer than `x = 25` |
+| 🔄 **Reassignment changes** | The label's target — the old value is cleaned up |
 
 ---
 
-## Further Reading
+## 🔗 Further Reading
 
-- [Python Naming Conventions — PEP 8](https://peps.python.org/pep-0008/#naming-conventions) — Official style guide
-- [Variables in Python — Real Python](https://realpython.com/python-variables/) — Deep dive
-- [Python Built-in Functions — docs](https://docs.python.org/3/library/functions.html) — Complete reference
+- 📖 [Python Naming Conventions — PEP 8](https://peps.python.org/pep-0008/#naming-conventions) — Official style guide
+- 🏷️ [Variables in Python — Real Python](https://realpython.com/python-variables/) — Deep dive
+- 🔧 [Python Built-in Functions — docs](https://docs.python.org/3/library/functions.html) — Complete reference

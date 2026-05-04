@@ -1,83 +1,11 @@
-# Code examples from "Polymorphism" lesson
+"""
+Polymorphism (Many Forms, One Interface)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Basic polymorphism
-class Animal:
-    def speak(self):
-        return "Some sound"
-
-class Dog(Animal):
-    def speak(self):
-        return "Woof!"
-
-class Cat(Animal):
-    def speak(self):
-        return "Meow!"
-
-animals = [Dog(), Cat()]
-for animal in animals:
-    print(animal.speak())
-
-print("---")
-
-# Example 2: Function with polymorphism
-class Rectangle:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-    
-    def area(self):
-        return self.width * self.height
-
-class Triangle:
-    def __init__(self, base, height):
-        self.base = base
-        self.height = height
-    
-    def area(self):
-        return 0.5 * self.base * self.height
-
-def print_area(shape):
-    print(f"Area: {shape.area()}")
-
-print_area(Rectangle(4, 5))  # 20
-print_area(Triangle(4, 5))  # 10
-
-print("---")
-
-# Example 3: Override with super()
-class Bird:
-    def fly(self):
-        return "Flying"
-
-class Penguin(Bird):
-    def fly(self):
-        return "Can't fly :("
-
-p = Penguin()
-print(p.fly())  # Can't fly :(
-
-print("---")
-
-# Example 4: Abstract-like behavior
-class User:
-    def login(self):
-        pass
-
-class Admin(User):
-    def login(self):
-        return "Admin login: full access"
-
-class RegularUser(User):
-    def login(self):
-        return "User login: limited access"
-
-users = [Admin(), RegularUser()]
-for user in users:
-    print(user.login())
-
-print("---")
-
-# Example 5: Using isinstance
+# Example 1 — Basic Polymorphism
 class Dog:
     def speak(self):
         return "Woof!"
@@ -86,46 +14,172 @@ class Cat:
     def speak(self):
         return "Meow!"
 
-def make_speak(animal):
-    if isinstance(animal, Dog):
-        return "Dog says: " + animal.speak()
-    elif isinstance(animal, Cat):
-        return "Cat says: " + animal.speak()
-    return "Unknown"
+class Bird:
+    def speak(self):
+        return "Tweet!"
 
-print(make_speak(Dog()))
-print(make_speak(Cat()))
+# Works with any object that has speak()
+for animal in [Dog(), Cat(), Bird()]:
+    print(animal.speak())
 
 
-# =====================
-# PRACTICE EXERCISE
-# =====================
+# Example 2 — Function Polymorphism
+def make_it_speak(animal):
+    """Works with ANY object that has speak()."""
+    print(animal.speak())
 
-# 1. Create Shape class with area() returning 0
+make_it_speak(Dog())   # Woof!
+make_it_speak(Cat())   # Meow!
+make_it_speak(Bird())  # Tweet!
+
+
+# Example 3 — Inheritance Polymorphism
 class Shape:
     def area(self):
         return 0
 
-# 2. Create Circle and Square that override area()
+class Rectangle(Shape):
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+
+    def area(self):
+        return self.w * self.h
+
 class Circle(Shape):
-    def __init__(self, radius):
-        self.radius = radius
-    
+    def __init__(self, r):
+        self.r = r
+
     def area(self):
-        return 3.14 * self.radius ** 2
+        return 3.14 * self.r ** 2
 
-class Square(Shape):
-    def __init__(self, side):
-        self.side = side
-    
-    def area(self):
-        return self.side ** 2
-
-# 3. Create a function that takes any shape
-def get_area(shape):
-    return shape.area()
-
-# 4. Test with different shapes
-shapes = [Circle(5), Square(4), Shape()]
+shapes = [Rectangle(5, 3), Circle(4), Rectangle(2, 6)]
 for shape in shapes:
-    print(f"Area: {get_area(shape)}")
+    print(f"Area: {shape.area()}")
+
+
+# Example 4 — Duck Typing
+class File:
+    def process(self):
+        print("Processing file...")
+
+class Email:
+    def process(self):
+        print("Processing email...")
+
+def process(item):
+    """Works with anything that has process() method."""
+    item.process()
+
+process(File())   # Processing file...
+process(Email())  # Processing email...
+
+
+# Example 5 — Operator Overloading
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+v1 = Vector(1, 2)
+v2 = Vector(3, 4)
+print(v1 + v2)  # (4, 6)
+
+
+# Example 6 — len() Polymorphism
+# Built-in functions use polymorphism too!
+print(len("hello"))        # 5 (string)
+print(len([1, 2, 3]))      # 3 (list)
+print(len({"a": 1, "b": 2}))  # 2 (dict)
+
+# All work because they implement __len__
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRACTICE EXERCISE
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Create two classes with the same method name but different behavior
+# 2. Write a function that accepts either class
+# 3. Use + operator on a custom class
+# 4. Create a list of different objects and call the same method on each
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# 1-2. Payment classes
+class CreditCard:
+    def pay(self, amount):
+        print(f"Paid ${amount} via Credit Card")
+
+class PayPal:
+    def pay(self, amount):
+        print(f"Paid ${amount} via PayPal")
+
+def checkout(payment_method, amount):
+    payment_method.pay(amount)
+
+checkout(CreditCard(), 100)
+checkout(PayPal(), 50)
+
+# 3. Custom + operator
+class Money:
+    def __init__(self, amount, currency="USD"):
+        self.amount = amount
+        self.currency = currency
+
+    def __add__(self, other):
+        if self.currency == other.currency:
+            return Money(self.amount + other.amount, self.currency)
+        raise ValueError("Currencies must match")
+
+    def __str__(self):
+        return f"{self.amount} {self.currency}"
+
+m1 = Money(50)
+m2 = Money(30)
+print(m1 + m2)  # 80 USD
+
+# 4. List of different objects
+class Notifier:
+    def send(self):
+        print("Sending...")
+
+class Email2:
+    def send(self):
+        print("Sending email...")
+
+class SMS:
+    def send(self):
+        print("Sending SMS...")
+
+notifiers = [Notifier(), Email2(), SMS()]
+for n in notifiers:
+    n.send()
+
+# Try modifying it:
+# - Create a generic function that calculates "value" for any object
+class Product:
+    def __init__(self, price, tax=0.08):
+        self.price = price
+        self.tax = tax
+
+    def total(self):
+        return self.price * (1 + self.tax)
+
+class Service:
+    def __init__(self, hourly_rate, hours):
+        self.hourly_rate = hourly_rate
+        self.hours = hours
+
+    def total(self):
+        return self.hourly_rate * self.hours
+
+def calculate_total(item):
+    return item.total()
+
+print(f"Product: ${calculate_total(Product(100))}")
+print(f"Service: ${calculate_total(Service(50, 3))}")

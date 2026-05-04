@@ -1,149 +1,237 @@
-# Logical Operators: Building Complex Conditions
+# 🧠 Logical Operators: Combining Conditions
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/and-Both%20must%20be%20true-blue?style=flat-square" alt="and">
+  <img src="https://img.shields.io/badge/or-At%20least%20one-green?style=flat-square" alt="or">
+  <img src="https://img.shields.io/badge/not-Invert-orange?style=flat-square" alt="not">
+</p>
 
-- Combine conditions with `and`, `or`, and `not`
-- Understand truth tables
-- Use logical operators in real code
+> ### 💡 Logical operators let you combine multiple conditions. Like wiring multiple switches to control one light.
+> Learn how to use `and`, `or`, and `not` to build complex logic.
 
-## The Three Logical Operators
+---
 
-| Operator | Description | Returns True when |
-|----------|-------------|-------------------|
-| and | Both must be True | All conditions are True |
-| or | At least one must be True | Any condition is True |
-| not | Inverts the condition | Condition is False |
+## 🎯 Learning Objectives
 
-## Using and, or, not
+By the end of this lesson, you will be able to:
 
-```python
-# AND - Both conditions must be True
-age = 25
-has_license = True
-can_drive = age >= 18 and has_license
-print(can_drive)  # True (both are True)
+- ✅ Use `and`, `or`, and `not` to combine boolean conditions
+- ✅ Understand short-circuit evaluation
+- ✅ Write complex conditions that are still readable
+
+---
+
+## 🧠 Mental Model: Light Switches
+
+Think of logical operators like **wiring light switches**:
+
+| Operator | Wiring | Light turns ON when... |
+|----------|--------|------------------------|
+| `and` | Series (in a line) | **Both** switches are ON |
+| `or` | Parallel (side by side) | **At least one** switch is ON |
+| `not` | Reverse wiring | Light is ON when switch is OFF |
+
+---
+
+## 📖 The Operators
+
+| Operator | Meaning | Example | Result |
+|----------|---------|---------|--------|
+| `and` | Both must be True | `True and False` | `False` |
+| `or` | At least one must be True | `True or False` | `True` |
+| `not` | Inverts the value | `not True` | `False` |
+
+### Truth Tables
+
+```
+A     B     A and B    A or B    not A
+True  True  True       True      False
+True  False False      True      False
+False True  False      True      True
+False False False      False     True
 ```
 
-```python
-# OR - At least one condition must be True
-has_card = False
-has_cash = True
-can_buy = has_card or has_cash
-print(can_buy)  # True (has_cash is True)
-```
+---
+
+## 🤔 Real-World Examples
 
 ```python
-# NOT - Inverts the boolean
-is_raining = True
-is_outdoor = not is_raining
-print(is_outdoor)  # False
-```
-
-## The Truth Table
-
-### AND
-
-| A | B | A and B |
-|---|---|---------|
-| True | True | True |
-| True | False | False |
-| False | True | False |
-| False | False | False |
-
-### OR
-
-| A | B | A or B |
-|---|---|---------|
-| True | True | True |
-| True | False | True |
-| False | True | True |
-| False | False | False |
-
-### NOT
-
-| A | not A |
-|---|-------|
-| True | False |
-| False | True |
-
-## Real-World Examples
-
-```python
-# Example 1: Login validation
-username = "alice"
-password = "secret123"
-is_valid_user = username == "alice"
-is_valid_pass = password == "secret123"
-can_login = is_valid_user and is_valid_pass
-print(f"Can login: {can_login}")
-```
-
-```python
-# Example 2: Multiple conditions
-age = 16
-has_permission = False
-is_adult = age >= 18
-can_access = is_adult or has_permission
-print(f"Can access: {can_access}")  # False
-```
-
-## Combining Multiple Operators
-
-```python
-# Mix and, or with parentheses
-age = 25
-is_student = False
+# AND — both must be True
+has_ticket = True
 has_id = True
+can_enter = has_ticket and has_id  # True
 
-# Complex condition
-can_enter = (age >= 18 or is_student) and has_id
-print(can_enter)  # True
+# OR — at least one must be True
+is_weekend = True
+is_holiday = False
+can_sleep_in = is_weekend or is_holiday  # True
+
+# NOT — inverts
+is_raining = True
+need_umbrella = not is_raining  # False
 ```
 
-## Code Examples
+---
+
+## ⚡ Short-Circuit Evaluation
+
+Python is lazy — it stops checking as soon as it knows the answer:
 
 ```python
-# Example 1: Basic and
-is_sunny = True
-is_warm = True
-is_good_weather = is_sunny and is_warm
-print(f"Good weather: {is_good_weather}")  # True
+# AND: stops at first False
+False and print("This won't run!")  # Stops at False
 
-# Example 2: Basic or
+# OR: stops at first True
+True or print("This won't run!")    # Stops at True
+```
+
+This is useful for safe checks:
+
+```python
+# Instead of:
+if user is not None and user.is_active:
+    ...
+
+# Python checks `user is not None` first
+# If False, it never checks `user.is_active` — no crash!
+```
+
+---
+
+## ⚠️ Common Mistakes
+
+```
+❌ Using `and` when you mean `or`
+   if temp > 100 and temp < 0:   → Always False (impossible!)
+   if temp > 100 or temp < 0:    ← Correct (extreme temperatures)
+
+❌ Chaining comparisons incorrectly
+   if x == 1 or 2 or 3:          → Always True (non-zero is Truthy!)
+   if x in (1, 2, 3):            ← Correct
+
+❌ Overcomplicating conditions
+   if (is_raining == True and has_umbrella == True):  ← Verbose
+   if is_raining and has_umbrella:                    ← Clean
+
+❌ Forgetting operator precedence
+   True or True and False  → True (and first)
+   (True or True) and False → False (parentheses change order)
+```
+
+---
+
+## 💻 Code Examples
+
+### 📌 Example 1 — Basic `and`
+
+```python
+is_adult = True
+has_license = True
+
+# Both must be True
+can_drive = is_adult and has_license
+print(f"Can drive: {can_drive}")  # True
+
+# One is False
+has_license = False
+can_drive = is_adult and has_license
+print(f"Can drive: {can_drive}")  # False
+```
+
+### 📌 Example 2 — Basic `or`
+
+```python
 is_weekend = False
 is_holiday = True
-can_rest = is_weekend or is_holiday
-print(f"Can rest: {can_rest}")  # True
 
-# Example 3: Not
-is_raining = False
-print(not is_raining)  # True
+# At least one must be True
+can_sleep_in = is_weekend or is_holiday
+print(f"Can sleep in: {can_sleep_in}")  # True
 
-# Example 4: Complex condition
-age = 16
-has_parent = True
-can_watch_movie = age >= 17 or has_parent
-print(f"Can watch: {can_watch_movie}")  # True
-
-# Example 5: Short-circuit evaluation
-# Python stops evaluating as soon as it knows the result
-x = 5
-result = x > 10 and x / 0  # Won't divide by 0!
-print(result)  # False (stops at first condition)
+# Both False
+is_holiday = False
+can_sleep_in = is_weekend or is_holiday
+print(f"Can sleep in: {can_sleep_in}")  # False
 ```
 
-## Key Takeaways
+### 📌 Example 3 — Basic `not`
 
-1. **and** - Both conditions must be True
-2. **or** - At least one must be True
-3. **not** - Inverts the boolean
-4. **Short-circuit** - Python stops early if result is determined
-5. **Use parentheses** to group conditions clearly
+```python
+is_raining = True
 
-## Practice Exercise
+# Invert the value
+print(f"It is raining: {is_raining}")        # True
+print(f"It is NOT raining: {not is_raining}") # False
+```
 
-1. Create two booleans: is_student (True), has_id (True)
-2. Use and to check both conditions
-3. Use or to check at least one condition
-4. Use not to invert is_student
-5. Create a complex condition with and, or, not
+### 📌 Example 4 — Combining Multiple Operators
+
+```python
+age = 25
+has_ticket = True
+is_member = False
+
+# VIP entry: must be adult AND (has ticket OR is member)
+can_enter = age >= 18 and (has_ticket or is_member)
+print(f"Can enter: {can_enter}")  # True
+```
+
+### 📌 Example 5 — Operator Precedence
+
+```python
+# Order: not > and > or (like PEMDAS for logic)
+
+result = True or True and False
+# Evaluates as: True or (True and False) → True or False → True
+
+result = not False and True or False
+# Evaluates as: (not False) and True or False → True and True or False → True
+
+print(f"Result: {result}")
+```
+
+### 📌 Example 6 — Practical Use Cases
+
+```python
+# Check if a year is a leap year
+year = 2024
+is_leap = (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+print(f"{year} is leap: {is_leap}")  # True
+
+# Validate user input
+username = "admin"
+password = "secret123"
+is_admin = True
+
+login_success = (username == "admin" and password == "secret123") and is_admin
+print(f"Login: {login_success}")
+```
+
+---
+
+## 🧪 Practice Exercise
+
+1. Create two boolean variables and combine them with `and`
+2. Use `or` to check if a number is negative OR greater than 100
+3. Use `not` to invert a boolean
+4. Write a complex condition with parentheses to control order
+
+---
+
+## 📋 Key Takeaways
+
+| Operator | Key Insight |
+|----------|-------------|
+| `and` | Both must be True — stops at first False |
+| `or` | At least one must be True — stops at first True |
+| `not` | Inverts the value — `not True → False` |
+| 🔗 **Precedence** | `not` > `and` > `or` — use parentheses to be clear |
+| ⚡ **Short-circuit** | Python stops early — useful for safe checks |
+
+---
+
+## 🔗 Further Reading
+
+- 📖 [Boolean Operations — Official Docs](https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not)
+- ⚡ [Short-Circuit Evaluation — docs](https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not)
+- 🧮 [Operator Precedence — docs](https://docs.python.org/3/reference/expressions.html#operator-precedence)

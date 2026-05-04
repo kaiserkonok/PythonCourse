@@ -1,81 +1,129 @@
-# Code examples from "Namespace & Scope" lesson
+"""
+Namespace & Scope (Where Variables Live)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Local scope
+# Example 1 — Local Scope
 def greet():
-    message = "Hello!"  # Local
+    message = "Hello!"  # Local variable
     print(message)
 
-greet()  # Hello!
-# print(message)  # ERROR!
-
-# Example 2: Global scope
-message = "World"
-
-def say_hello():
-    print(f"Hello, {message}!")
-
-say_hello()  # Hello, World!
-
-# Example 3: Same name, different scopes
-name = "Alice"  # Global
-
-def greet():
-    name = "Bob"  # Local (different!)
-    print(f"Hello, {name}!")  # Bob
-
 greet()
-print(name)  # Alice (unchaged)
+# print(message)  → NameError (not visible outside)
 
-# Example 4: Global keyword
-counter = 0
 
-def increment():
-    global counter
-    counter += 1
+# Example 2 — Global Scope
+name = "World"  # Global
 
-increment()
-print(counter)  # 1
-increment()
-print(counter)  # 2
+def greet_global():
+    print(f"Hello, {name}!")  # Can read globals
 
-# Example 5: Nested functions
+greet_global()  # Hello, World!
+
+
+# Example 3 — Shadowing
+x = 100  # Global
+
+def shadow():
+    x = 50  # Local (shadows global)
+    print(f"Local: {x}")
+
+shadow()      # Local: 50
+print(f"Global: {x}")  # Global: 100
+
+
+# Example 4 — The `global` Keyword
+score = 0
+
+def add_points(pts):
+    global score
+    score += pts
+
+add_points(10)
+add_points(5)
+print(f"Score: {score}")  # Score: 15
+
+
+# Example 5 — Nested Functions
 def outer():
     x = "outer"
-    
+
     def inner():
-        nonlocal x  # Refers to outer's x
-        x = "modified"
-        print(f"Inner: {x}")
-    
+        x = "inner"
+        print(x)  # inner (local)
+
     inner()
-    print(f"Outer: {x}")
+    print(x)  # outer (enclosing)
 
 outer()
 
 
-# =====================
+# Example 6 — Closures
+def make_multiplier(factor):
+    def multiply(x):
+        return x * factor
+    return multiply
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+
+print(double(5))  # 10
+print(triple(5))  # 15
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # PRACTICE EXERCISE
-# =====================
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Create a function that uses a local variable
+# 2. Try to access a local variable from outside and see the error
+# 3. Use global to modify a global counter
+# 4. Create a closure that remembers a value
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# 1. Create a global variable
-global_var = "I am global"
+# 1. Local variable
+def local_demo():
+    secret = "I'm local!"
+    print(secret)
 
-# 2. Create a function that reads it
-def read_global():
-    print(f"Reading: {global_var}")
+local_demo()
 
-read_global()
+# 2. Accessing local outside (commented out to avoid crash)
+# print(secret)  → NameError
 
-# 3. Create a function that tries to modify it (before global)
-def try_modify():
-    print(f"Before global: {global_var}")  # Can read
-    # global_var = "Modified locally"  # This creates a local variable!
-    # print(try_modify_local())  # Would show local
+# 3. Global counter
+call_count = 0
 
-# 4. Use global to actually modify it
-def modify_with_global():
-    global global_var
-    global_var = "Modified by function!"
+def track_calls():
+    global call_count
+    call_count += 1
+    print(f"Called {call_count} times")
 
-modify_with_global()
-print(f"Now global_var is: {global_var}")
+track_calls()
+track_calls()
+
+# 4. Closure
+def power_of(n):
+    def calculate(x):
+        return x ** n
+    return calculate
+
+square = power_of(2)
+cube = power_of(3)
+print(f"4 squared: {square(4)}, 4 cubed: {cube(4)}")
+
+# Try modifying it:
+# - Use nonlocal to modify a variable in an outer (non-global) scope
+def counter():
+    count = 0
+    def increment():
+        nonlocal count
+        count += 1
+        return count
+    return increment
+
+c = counter()
+print(c())  # 1
+print(c())  # 2
+print(c())  # 3

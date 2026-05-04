@@ -1,48 +1,96 @@
-# Code examples from "List Comprehensions" lesson
+"""
+List Comprehensions (Python's Magic Syntax)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Basic comprehension
+# Example 1 — Basic Comprehension
 numbers = [1, 2, 3, 4, 5]
-doubled = [x * 2 for x in numbers]
-print(doubled)  # [2, 4, 6, 8, 10]
 
-# Example 2: With range
-squares = [x**2 for x in range(1, 6)]
+# Traditional loop
+squares = []
+for n in numbers:
+    squares.append(n ** 2)
+
+# Comprehension (same result, cleaner)
+squares = [n ** 2 for n in numbers]
 print(squares)  # [1, 4, 9, 16, 25]
 
-# Example 3: With condition
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-evens = [x for x in numbers if x % 2 == 0]
-print(evens)  # [2, 4, 6, 8, 10]
 
-# Example 4: String manipulation
-text = "hello world"
-letters = [char.upper() for char in text if char != " "]
-print(letters)  # ["H", "E", "L", "L", "O", "W", "O", "R", "L", "D"]
+# Example 2 — With a Condition
+numbers = range(10)
 
-# Example 5: Nested comprehension (flatten)
-matrix = [[1, 2], [3, 4]]
+# Only even numbers
+evens = [n for n in numbers if n % 2 == 0]
+print(evens)  # [0, 2, 4, 6, 8]
+
+
+# Example 3 — Transforming Strings
+words = ["hello", "WORLD", "Python"]
+
+# Uppercase all words
+upper = [w.upper() for w in words]
+print(upper)  # ["HELLO", "WORLD", "PYTHON"]
+
+# Length of each word
+lengths = [len(w) for w in words]
+print(lengths)  # [5, 5, 6]
+
+
+# Example 4 — If/Else in Comprehension
+numbers = [1, 2, 3, 4, 5]
+
+# Label even/odd
+labels = ["even" if n % 2 == 0 else "odd" for n in numbers]
+print(labels)  # ["odd", "even", "odd", "even", "odd"]
+
+
+# Example 5 — Nested Comprehensions
+# Flattening a matrix
+matrix = [[1, 2], [3, 4], [5, 6]]
+
 flat = [num for row in matrix for num in row]
-print(flat)  # [1, 2, 3, 4]
+print(flat)  # [1, 2, 3, 4, 5, 6]
 
 
-# =====================
+# Example 6 — Dictionary Comprehension
+# You can also create dicts!
+numbers = [1, 2, 3, 4]
+
+squares_dict = {n: n**2 for n in numbers}
+print(squares_dict)  # {1: 1, 2: 4, 3: 9, 4: 16}
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # PRACTICE EXERCISE
-# =====================
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Create a list of squares from 1 to 10 using a comprehension
+# 2. Filter a list of names to only include those starting with "A"
+# 3. Convert a list of Celsius temperatures to Fahrenheit
+# 4. Create a dictionary of numbers and their squares
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# 1. Create a list of cubes for numbers 1-5 using comprehension
-cubes = [x**3 for x in range(1, 6)]
-print(f"Cubes: {cubes}")  # [1, 8, 27, 64, 125]
+# 1. Squares 1-10
+squares_10 = [x**2 for x in range(1, 11)]
+print(f"Squares: {squares_10}")
 
-# 2. Filter a list to only include numbers > 5
-numbers = [1, 10, 3, 8, 5, 12, 7]
-filtered = [x for x in numbers if x > 5]
-print(f"Filtered: {filtered}")  # [10, 8, 12]
+# 2. Names starting with "A"
+names = ["Alice", "Bob", "Anna", "Charlie", "Amy"]
+a_names = [name for name in names if name.startswith("A")]
+print(f"A names: {a_names}")
 
-# 3. Create a list of first 10 even numbers
-evens = [x for x in range(2, 21, 2)]
-print(f"First 10 evens: {evens}")  # [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+# 3. Celsius to Fahrenheit
+celsius = [0, 10, 20, 30, 40]
+fahrenheit = [(c * 9/5) + 32 for c in celsius]
+print(f"Fahrenheit: {fahrenheit}")
 
-# 4. Extract vowels from a sentence
-sentence = "hello world how are you"
-vowels = [char for char in sentence if char in "aeiou"]
-print(f"Vowels: {vowels}")  # ['e', 'o', 'o', 'a', 'e', 'o', 'u']
+# 4. Dictionary of squares
+nums = [1, 2, 3, 4, 5]
+sq_dict = {n: n**2 for n in nums}
+print(f"Dict: {sq_dict}")
+
+# Try modifying it:
+# - Create a 2D grid using nested comprehensions
+grid = [[row * col for col in range(1, 4)] for row in range(1, 4)]
+print(f"Grid: {grid}")

@@ -1,135 +1,180 @@
-# Lambda Functions: Writing One-Liner Anonymous Functions
+# ⚡ Lambda Functions: Anonymous One-Liners
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/lambda-Anonymous-blue?style=flat-square" alt="lambda">
+  <img src="https://img.shields.io/badge/Short-One%20Line-green?style=flat-square" alt="one-line">
+  <img src="https://img.shields.io/badge/Use-Callbacks%20%26%20Sorting-orange?style=flat-square" alt="Use Case">
+</p>
 
-- Create lambda functions
-- Understand anonymous functions
-- Use lambdas with built-in functions
+> ### 💡 Lambda functions are quick, anonymous functions for simple tasks. Like a sticky note — small, temporary, and perfect for one-time use.
+> Learn how to write inline functions without naming them.
 
-## What is a Lambda?
+---
 
-A lambda is an **anonymous function** (one-line):
+## 🎯 Learning Objectives
+
+By the end of this lesson, you will be able to:
+
+- ✅ Create lambda functions using the `lambda` keyword
+- ✅ Use lambdas with `sorted()`, `map()`, and `filter()`
+- ✅ Know when to use lambdas vs regular functions
+
+---
+
+## 🧠 Mental Model: A Sticky Note
+
+A lambda is like a **sticky note** — you write a quick instruction and stick it where needed:
+
+```
+Regular function:  "Here's a formal recipe card"
+Lambda function:   "Here's a quick sticky note: 'sort by name'"
+```
+
+Lambdas are for **small, throwaway** functions that you only use once.
+
+---
+
+## 📖 The Syntax
 
 ```python
-# Named function
+lambda arguments: expression
+```
+
+| Part | What it is |
+|------|------------|
+| `lambda` | Keyword |
+| `arguments` | Input variables (like function parameters) |
+| `:` | Separator |
+| `expression` | The result (automatically returned) |
+
+---
+
+## 📊 Lambda vs Regular Function
+
+```python
+# Regular function
 def add(a, b):
     return a + b
 
 # Lambda
 add = lambda a, b: a + b
+
+# Both do the same thing!
 ```
 
-## Lambda Syntax
+---
 
-```python
-lambda parameters: expression
+## ⚠️ Common Mistakes
+
+```
+❌ Multiple expressions
+   lambda x: x + 1; x * 2  → SyntaxError
+   Lambdas can only have ONE expression
+
+❌ Statements inside lambdas
+   lambda x: if x > 0: x  → SyntaxError
+   Lambdas can't contain statements (if, for, while, etc.)
+
+❌ Overcomplicating lambdas
+   lambda x: ...  # 50 characters of logic
+   ← Use a regular function instead
+
+❌ Not assigning or using
+   lambda x: x + 1  ← Does nothing! Must use immediately
+   sorted(items, key=lambda x: x.name)  ← Correct
 ```
 
-```python
-# Simple lambda
-double = lambda x: x * 2
+---
 
-# Two parameters
-add = lambda a, b: a + b
+## 💻 Code Examples
 
-# With multiple expressions (not allowed!)
-# lambdas are single expressions only
-```
-
-## Using Lambdas
+### 📌 Example 1 — Basic Lambda
 
 ```python
-# Lambda assigned to variable
-multiply = lambda a, b: a * b
-print(multiply(3, 4))  # 12
+# Regular function
+def square(x):
+    return x ** 2
 
-# Lambda without name (anonymous)
-print((lambda x: x * 2)(5))  # 10
-```
-
-## Lambdas with Built-in Functions
-
-```python
-# sorted() with key
-names = ["Bob", "Alice", "Charlie"]
-print(sorted(names))  # Alphabetical
-print(sorted(names, key=lambda x: len(x)))  # By length: Bob, Alice, Charlie
-```
-
-```python
-# map() - apply to all
-numbers = [1, 2, 3]
-doubled = list(map(lambda x: x * 2, numbers))
-print(doubled)  # [2, 4, 6]
-```
-
-```python
-# filter() - keep matching
-numbers = [1, 2, 3, 4, 5]
-evens = list(filter(lambda x: x % 2 == 0, numbers))
-print(evens)  # [2, 4]
-```
-
-```python
-# sorted() with multiple keys
-people = [("Alice", 25), ("Bob", 30), ("Charlie", 25)]
-# Sort by age, then name
-sorted_people = sorted(people, key=lambda x: (x[1], x[0]))
-print(sorted_people)
-```
-
-## Code Examples
-
-```python
-# Example 1: Simple lambda
+# Lambda equivalent
 square = lambda x: x ** 2
+
 print(square(5))  # 25
+```
 
-# Example 2: Lambda with multiple args
-full_name = lambda first, last: f"{first} {last}"
-print(full_name("John", "Doe"))
+### 📌 Example 2 — Multiple Arguments
 
-# Example 3: Using with sorted()
-words = ["longword", "cat", "elephant"]
-print(sorted(words, key=lambda w: len(w)))  # cat, longword, elephant
+```python
+add = lambda a, b: a + b
+print(add(3, 4))  # 7
+```
 
-# Example 4: Using with map()
+### 📌 Example 3 — Sorting with Lambda
+
+```python
+students = [
+    {"name": "Alice", "grade": 85},
+    {"name": "Bob", "grade": 92},
+    {"name": "Charlie", "grade": 78}
+]
+
+# Sort by grade
+sorted_students = sorted(students, key=lambda s: s["grade"])
+print(sorted_students)
+```
+
+### 📌 Example 4 — `map()` with Lambda
+
+```python
 numbers = [1, 2, 3, 4, 5]
+
+# Square each number
 squared = list(map(lambda x: x ** 2, numbers))
 print(squared)  # [1, 4, 9, 16, 25]
-
-# Example 5: Using with filter()
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-odd = list(filter(lambda x: x % 2 != 0, numbers))
-print(odd)  # [1, 3, 5, 7, 9]
 ```
 
-## Lambda vs def
+### 📌 Example 5 — `filter()` with Lambda
 
-| Lambda | def |
-|--------|------|
-| One line only | Multiple lines |
-| No name (anonymous) | Has name |
-| Returns expression | Returns anything |
-| Limited | Full power |
+```python
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-## When to Use Lambdas
+# Keep only even numbers
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+print(evens)  # [2, 4, 6, 8, 10]
+```
 
-- **Short functions** - simple operations
-- **Callbacks** - for sorted(), map(), filter()
-- **One-time use** - don't need to reuse
+### 📌 Example 6 — Immediate Invocation
 
-## Key Takeaways
+```python
+# Lambda called immediately
+result = (lambda x, y: x + y)(3, 4)
+print(result)  # 7
+```
 
-1. **lambda** keyword creates anonymous function
-2. **Single expression** only (no statements)
-3. **Used with** sorted(), map(), filter()
-4. **Not for complex logic**
-5. **More Pythonic** for simple operations
+---
 
-## Practice Exercise
+## 🧪 Practice Exercise
 
-1. Create a lambda that doubles a number
-2. Create a lambda that checks if even
-3. Use lambda with sorted() to sort by custom order
-4. Use lambda with map() to transform a list
+1. Create a lambda that multiplies two numbers
+2. Use a lambda to sort a list of tuples by the second element
+3. Filter a list of words to only include those longer than 5 characters
+4. Use `map()` with a lambda to convert strings to uppercase
+
+---
+
+## 📋 Key Takeaways
+
+| Concept | Takeaway |
+|---------|----------|
+| ⚡ **Lambda** | Anonymous one-line function |
+| 📏 **Syntax** | `lambda args: expression` |
+| 🔄 **Use cases** | `sorted()`, `map()`, `filter()` |
+| 📝 **Limitations** | One expression only, no statements |
+| 🎯 **When to use** | Simple, throwaway logic — not complex functions |
+
+---
+
+## 🔗 Further Reading
+
+- 📖 [Lambda Expressions — Official Docs](https://docs.python.org/3/reference/expressions.html#lambda)
+- 🌟 [Map, Filter, Lambda — Real Python](https://realpython.com/python-lambda/)
+- 🔧 [Functional Programming — docs](https://docs.python.org/3/howto/functional.html)

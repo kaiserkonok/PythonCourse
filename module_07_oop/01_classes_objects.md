@@ -1,159 +1,234 @@
-# Classes & Objects: Moving from Procedural to Object-Oriented Thinking
+# 🏗️ Classes & Objects: Blueprint for Data
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/class-Blueprint-blue?style=flat-square" alt="class">
+  <img src="https://img.shields.io/badge/object-Instance-green?style=flat-square" alt="object">
+  <img src="https://img.shields.io/badge/OOP-Paradigm-orange?style=flat-square" alt="OOP">
+</p>
 
-- Understand what classes and objects are
-- Create basic classes and objects
-- Think in object-oriented terms
+> ### 💡 A class is a blueprint. An object is the house you build from it. OOP lets you model real-world things in code.
+> Learn how to create your own custom data types.
 
-## What is a Class?
+---
 
-A class is a **blueprint** for creating objects:
+## 🎯 Learning Objectives
 
-- **Class** - The blueprint
-- **Object** - An instance of the class
+By the end of this lesson, you will be able to:
+
+- ✅ Define classes and create objects
+- ✅ Understand the relationship between classes and objects
+- ✅ Add attributes and methods to classes
+
+---
+
+## 🧠 Mental Model: A Blueprint
+
+A **class** is like an architect's blueprint:
+
+```
+📐 Blueprint (Class)
+   └── 🏠 House 1 (Object)
+   └── 🏠 House 2 (Object)
+   └── 🏠 House 3 (Object)
+```
+
+One blueprint can build many houses. Each house is unique but follows the same design.
+
+---
+
+## 📖 Basic Syntax
 
 ```python
-# Define a class
+class ClassName:
+    """Docstring explains the class."""
+
+    def __init__(self):
+        """Constructor — runs when object is created."""
+        pass
+
+    def method(self):
+        """A function that belongs to the class."""
+        pass
+```
+
+### Creating Objects
+
+```python
+# Create an object
+my_obj = ClassName()
+
+# Call a method
+my_obj.method()
+```
+
+---
+
+## 📊 Class vs Object
+
+| Concept | What it is | Example |
+|---------|------------|---------|
+| Class | Blueprint/Template | `Car` |
+| Object | Instance of a class | `my_tesla`, `your_bmw` |
+| Attribute | Data the object holds | `color`, `speed` |
+| Method | Function the object can do | `drive()`, `stop()` |
+
+---
+
+## ⚠️ Common Mistakes
+
+```
+❌ Forgetting `self` in methods
+   class Dog:
+       def bark():  → Missing self!
+           print("Woof!")
+   def bark(self):  ← Correct
+
+❌ Not calling the class
+   my_obj = Dog  ← Just references the class
+   my_obj = Dog()  ← Creates an instance
+
+❌ Confusing class and object
+   Dog.bark()  ← Wrong (bark needs an instance)
+   my_dog.bark()  ← Correct
+
+❌ Capitalizing incorrectly
+   class myClass:  ← Should be CamelCase
+   class MyClass:  ← Correct
+```
+
+---
+
+## 💻 Code Examples
+
+### 📌 Example 1 — Basic Class
+
+```python
 class Dog:
-    # Class behavior
+    """A simple Dog class."""
+
     def bark(self):
-        print("Woof!")
-
-# Create objects (instances)
-my_dog = Dog()
-your_dog = Dog()
-
-my_dog.bark()  # Woof!
-your_dog.bark()  # Woof!
-```
-
-## Class vs Object
-
-| Class | Object |
-|-------|--------|
-| Blueprint | Instance |
-| Template | Created from blueprint |
-| Defines attributes/behavior | Has actual values |
-
-## Creating Classes
-
-```python
-class Person:
-    # Constructor - called when creating object
-    def __init__(self, name):
-        self.name = name
-    
-    # Method - behavior
-    def greet(self):
-        return f"Hello, I'm {self.name}"
-
-# Create object
-person1 = Person("Alice")
-print(person1.greet())  # Hello, I'm Alice
-```
-
-## How Objects Work
-
-```python
-class Car:
-    def __init__(self, brand):
-        self.brand = brand
-    
-    def drive(self):
-        return f"{self.brand} is driving!"
+        print("Woof! Woof!")
 
 # Create objects
-car1 = Car("Toyota")
-car2 = Car("Honda")
+dog1 = Dog()
+dog2 = Dog()
 
-print(car1.brand)  # Toyota
-print(car2.brand)  # Honda
+dog1.bark()  # Woof! Woof!
+dog2.bark()  # Woof! Woof!
 ```
 
-## Code Examples
+### 📌 Example 2 — Adding Attributes
 
 ```python
-# Example 1: Simple class
 class Dog:
-    def __init__(self, name):
-        self.name = name
-    
-    def bark(self):
-        return f"{self.name} says Woof!"
-
-my_dog = Dog("Buddy")
-print(my_dog.bark())
-
-# Example 2: Class with multiple methods
-class Calculator:
-    def add(self, a, b):
-        return a + b
-    
-    def subtract(self, a, b):
-        return a - b
-
-calc = Calculator()
-print(calc.add(5, 3))
-print(calc.subtract(10, 4))
-
-# Example 3: Multiple objects
-class Car:
-    def __init__(self, brand):
-        self.brand = brand
-    
-    def drive(self):
-        return f"Driving {self.brand}"
-
-car1 = Car("Toyota")
-car2 = Car("Honda")
-print(car1.drive())
-print(car2.drive())
-
-# Example 4: Class with multiple attributes
-class Person:
     def __init__(self, name, age):
-        self.name = name
+        self.name = name  # Attribute
         self.age = age
-    
-    def introduce(self):
-        return f"I'm {self.name}, {self.age} years old"
 
-person = Person("Alice", 25)
-print(person.introduce())
+    def describe(self):
+        print(f"{self.name} is {self.age} years old")
 
-# Example 5: Self parameter
-class Rectangle:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-    
-    def area(self):
-        return self.width * self.height
-
-rect = Rectangle(5, 3)
-print(f"Area: {rect.area()}")
+my_dog = Dog("Buddy", 3)
+my_dog.describe()  # Buddy is 3 years old
 ```
 
-## Procedural vs OOP
+### 📌 Example 3 — Multiple Objects
 
-| Procedural | Object-Oriented |
-|-----------|------------------|
-| Functions + data | Objects + methods |
-| Data separate | Data with behavior |
-| Top-down | Bottom-up |
+```python
+class Car:
+    def __init__(self, brand, color):
+        self.brand = brand
+        self.color = color
 
-## Key Takeaways
+    def honk(self):
+        print(f"{self.brand} goes Beep!")
 
-1. **class** keyword defines blueprint
-2. **__init__** is called when creating object
-3. **self** refers to the object
-4. **Methods** define behavior
-5. **Objects** are instances of classes
+car1 = Car("Tesla", "Red")
+car2 = Car("BMW", "Blue")
 
-## Practice Exercise
+car1.honk()  # Tesla goes Beep!
+car2.honk()  # BMW goes Beep!
+```
 
-1. Create a class called Student
-2. Add name and age as attributes
-3. Add a method that introduces the student
-4. Create two Student objects
+### 📌 Example 4 — Modifying Attributes
+
+```python
+class Counter:
+    def __init__(self):
+        self.count = 0
+
+    def increment(self):
+        self.count += 1
+
+    def reset(self):
+        self.count = 0
+
+c = Counter()
+c.increment()
+c.increment()
+print(f"Count: {c.count}")  # 2
+```
+
+### 📌 Example 5 — Type Checking
+
+```python
+class Cat:
+    pass
+
+class Dog:
+    pass
+
+cat = Cat()
+dog = Dog()
+
+print(isinstance(cat, Cat))  # True
+print(isinstance(cat, Dog))  # False
+print(type(cat))             # <class '__main__.Cat'>
+```
+
+### 📌 Example 6 — `self` Explained
+
+```python
+class Person:
+    def __init__(self, name):
+        self.name = name  # self.name = this object's name
+
+    def greet(self):
+        print(f"Hi, I'm {self.name}")
+
+alice = Person("Alice")
+bob = Person("Bob")
+
+# self points to the calling object
+alice.greet()  # self → alice
+bob.greet()    # self → bob
+```
+
+---
+
+## 🧪 Practice Exercise
+
+1. Create a `Person` class with name and age attributes
+2. Add a method that prints a greeting
+3. Create two Person objects and call their methods
+4. Add a method that checks if the person is an adult
+
+---
+
+## 📋 Key Takeaways
+
+| Concept | Takeaway |
+|---------|----------|
+| 🏗️ **Class** | Blueprint for creating objects |
+| 📦 **Object** | Instance of a class |
+| 🔧 **`__init__`** | Constructor — runs on object creation |
+| 🎯 **`self`** | Reference to the current object |
+| 📝 **Attributes** | Data stored in the object |
+
+---
+
+## 🔗 Further Reading
+
+- 📖 [Classes — Official Docs](https://docs.python.org/3/tutorial/classes.html)
+- 🌟 [OOP in Python — Real Python](https://realpython.com/python3-object-oriented-programming/)
+- 🔧 [Class vs Instance — docs](https://docs.python.org/3/tutorial/classes.html#class-objects)

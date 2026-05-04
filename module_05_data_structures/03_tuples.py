@@ -1,51 +1,95 @@
-# Code examples from "Tuples" lesson
+"""
+Tuples (The Immutable Lists)
+────────────────────────────────────────────────────────────────────────────
+Code examples and practice exercises from the lesson.
+────────────────────────────────────────────────────────────────────────────
+"""
 
-# Example 1: Create tuple
-person = ("Alice", 25, "NYC")
-print(person)  # ("Alice", 25, "NYC")
+# Example 1 — Creating Tuples
+# Basic tuples
+point = (3, 4)
+colors = ("red", "green", "blue")
+mixed = (1, "hello", 3.14)
 
-# Example 2: Tuple without parentheses
-coords = 10, 20, 30
-print(coords)  # (10, 20, 30)
-
-# Example 3: Single element tuple (note the comma!)
-single = (5,)
-print(single)  # (5,)
-
-# Example 4: Unpacking
-point = (10, 20, 30)
-x, y, z = point
-print(f"x={x}, y={y}, z={z}")
-
-# Example 5: Tuple in functions (return multiple values)
-def get_stats(numbers):
-    return min(numbers), max(numbers), sum(numbers)
-
-result = get_stats([1, 2, 3])
-print(result)  # (1, 3, 6)
-min_val, max_val, total = result
-print(f"Min: {min_val}, Max: {max_val}, Total: {total}")
+print(point)    # (3, 4)
+print(colors)   # ("red", "green", "blue")
 
 
-# =====================
+# Example 2 — Accessing Items
+record = ("Alice", 25, "Engineer")
+
+print(record[0])  # Alice
+print(record[-1]) # Engineer
+print(record[1:]) # (25, "Engineer")
+
+
+# Example 3 — Tuple Unpacking
+# Unpack coordinates
+point = (10, 20)
+x, y = point
+print(f"X: {x}, Y: {y}")
+
+# Unpack record
+name, age, job = ("Bob", 30, "Developer")
+print(f"{name} is {age}, works as {job}")
+
+
+# Example 4 — Swapping Values
+a = 10
+b = 20
+
+# Pythonic way (tuple unpacking)
+a, b = b, a
+print(f"a: {a}, b: {b}")  # a: 20, b: 10
+
+
+# Example 5 — Tuples as Dictionary Keys
+# Tuples can be keys, lists cannot
+locations = {
+    (40, 74): "New York",
+    (51, 0): "London",
+    (35, 139): "Tokyo"
+}
+
+print(locations[(40, 74)])  # New York
+
+
+# Example 6 — Returning Multiple Values
+def get_name_age():
+    return "Alice", 25  # Returns a tuple!
+
+name, age = get_name_age()
+print(f"{name} is {age}")  # Alice is 25
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # PRACTICE EXERCISE
-# =====================
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. Create a tuple with your name, age, and city
+# 2. Unpack the tuple into three variables
+# 3. Try to modify the tuple and see the error
+# 4. Use a tuple as a dictionary key
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# 1. Create a tuple with your name, age, city
-my_info = ("Alice", 25, "New York")
-print(f"My info: {my_info}")
+# 1. Create tuple
+person = ("Charlie", 28, "London")
 
-# 2. Unpack it into 3 variables
-name, age, city = my_info
-print(f"Name: {name}, Age: {age}, City: {city}")
+# 2. Unpack
+name, age, city = person
+print(f"{name}, {age}, lives in {city}")
 
-# 3. Try to modify an element (see the error!)
-# my_info[0] = "Bob"  # This will raise TypeError!
-# Uncomment the line above to see the error
+# 3. Try to modify (will crash)
+# person[0] = "David"  # TypeError: 'tuple' object does not support item assignment
 
-# 4. Return multiple values from a function
-def get_name_info():
-    return "Alice", 25, "NYC"
+# 4. Tuple as dict key
+grades = {
+    ("Alice", "Math"): 95,
+    ("Bob", "Science"): 88
+}
+print(f"Alice Math: {grades[('Alice', 'Math')]}")
 
-result = get_name_info()
-print(f"Result: {result}")
+# Try modifying it:
+# - Unpack with * (extended unpacking)
+numbers = (1, 2, 3, 4, 5)
+first, *middle, last = numbers
+print(f"First: {first}, Middle: {middle}, Last: {last}")

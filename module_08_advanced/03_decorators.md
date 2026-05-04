@@ -1,21 +1,107 @@
-# Decorators: Functions That Wrap Other Functions
+# ✨ Decorators: Enhancing Functions
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/%40-Syntax-blue?style=flat-square" alt="@">
+  <img src="https://img.shields.io/badge/Wrapper-Function%20Wrapping-green?style=flat-square" alt="Wrapper">
+  <img src="https://img.shields.io/badge/Crosscutting-Logging%2FAuth-orange?style=flat-square" alt="Crosscutting">
+</p>
 
-- Understand what decorators are
-- Create basic decorators
-- Use @decorator syntax
+> ### 💡 Decorators are like gift wrapping — they add extra behavior to functions without changing the function itself.
+> Learn how to use and create decorators to enhance your code.
 
-## What is a Decorator?
+---
 
-A decorator **adds behavior** to a function without modifying it:
+## 🎯 Learning Objectives
+
+By the end of this lesson, you will be able to:
+
+- ✅ Understand what decorators do and why they're useful
+- ✅ Use built-in decorators like `@staticmethod` and `@property`
+- ✅ Create your own custom decorators
+
+---
+
+## 🧠 Mental Model: A Gift Wrapper
+
+A decorator is like **wrapping a gift**:
+
+```
+🎁 Original function = The gift
+📦 Decorator = The wrapping paper
+   → Gift stays the same, but now it has extra features!
+```
+
+The decorator takes a function, adds behavior, and returns a new enhanced function.
+
+---
+
+## 📖 Basic Syntax
+
+```python
+@decorator_name
+def my_function():
+    pass
+
+# Same as:
+def my_function():
+    pass
+my_function = decorator_name(my_function)
+```
+
+---
+
+## 📊 Common Built-in Decorators
+
+| Decorator | What it does | Use case |
+|-----------|-------------|----------|
+| `@property` | Turns method into attribute | Getters/setters |
+| `@staticmethod` | No `self` needed | Utility methods |
+| `@classmethod` | Gets class as first arg | Factory methods |
+| `@lru_cache` | Caches results | Speed up repeated calls |
+
+---
+
+## ⚠️ Common Mistakes
+
+```
+❌ Forgetting to return the wrapper
+   def my_decorator(func):
+       def wrapper():
+           print("Before")
+           func()
+           # Missing return wrapper!
+       return wrapper
+
+❌ Not using @wraps
+   @wraps(func) preserves original function name and docstring
+   Without it, decorated function shows as "wrapper"
+
+❌ Decorators with arguments complexity
+   @decorator(arg) requires THREE nested functions!
+   def decorator(arg):
+       def outer(func):
+           def wrapper(*args, **kwargs):
+               ...
+           return wrapper
+       return outer
+
+❌ Overusing decorators
+   Simple code doesn't need decoration
+   Use only when behavior is truly reusable
+```
+
+---
+
+## 💻 Code Examples
+
+### 📌 Example 1 — Simple Decorator
 
 ```python
 def my_decorator(func):
     def wrapper():
-        print("Before")
+        print("Before function call")
         func()
-        print("After")
+        print("After function call")
     return wrapper
 
 @my_decorator
@@ -23,153 +109,137 @@ def say_hello():
     print("Hello!")
 
 say_hello()
+# Before function call
+# Hello!
+# After function call
 ```
 
-## Creating Decorators
-
-```python
-def timer_decorator(func):
-    def wrapper(*args, **kwargs):
-        import time
-        start = time.time()
-        result = func(*args, **kwargs)
-        end = time.time()
-        print(f"Took {end - start} seconds")
-        return result
-    return wrapper
-
-@timer_decorator
-def slow_function():
-    import time
-    time.sleep(1)
-    print("Done!")
-
-slow_function()  # Takes ~1 second
-```
-
-## Passing Arguments to Decorators
+### 📌 Example 2 — Decorator with Arguments
 
 ```python
 def repeat(times):
     def decorator(func):
         def wrapper(*args, **kwargs):
             for _ in range(times):
-                func(*args, **kwargs)
+                result = func(*args, **kwargs)
+            return result
         return wrapper
     return decorator
 
 @repeat(3)
-def greet():
-    print("Hello!")
+def greet(name):
+    print(f"Hello, {name}!")
 
-greet()  # Prints "Hello!" 3 times
+greet("Alice")
 ```
 
-## Code Examples
+### 📌 Example 3 — Timing Decorator
 
 ```python
-# Example 1: Basic decorator
-def uppercase_decorator(func):
-    def wrapper():
-        return func().upper()
-    return wrapper
+import time
 
-@uppercase_decorator
-def sayhello():
-    return "hello"
-
-print(sayhello())  # HELLO
-
-# Example 2: Decorator with arguments
-def repeat(times):
-    def decorator(func):
-        def wrapper():
-            for _ in range(times):
-                func()
-        return wrapper
-    return decorator
-
-@repeat(3)
-def message():
-    print("Hi!")
-
-message()  # Prints "Hi!" 3 times
-
-# Example 3: Preserve function metadata
-import functools
-
-def logged(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        print(f"Calling {func.__name__}")
-        result = func(*args, **kwargs)
-        print(f"Called {func.__name__}")
-        return result
-    return wrapper
-
-@logged
-def add(a, b):
-    return a + b
-
-print(add(1, 2))
-
-# Example 4: Timing decorator
 def timer(func):
-    @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        import time
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        print(f"Took {end - start:.4f} seconds")
+        print(f"{func.__name__} took {end-start:.4f}s")
         return result
     return wrapper
 
 @timer
-def slow():
-    import time
+def slow_function():
     time.sleep(0.1)
+    return "Done!"
 
-slow()
+slow_function()
+```
 
-# Example 5: Authentication decorator
-def requires_auth(func):
-    @functools.wraps(func)
+### 📌 Example 4 — Logging Decorator
+
+```python
+def logger(func):
     def wrapper(*args, **kwargs):
-        user_logged_in = False  # Change to test
-        
-        if not user_logged_in:
-            return "Please login first!"
-        
+        print(f"Calling {func.__name__} with {args}")
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} returned {result}")
+        return result
+    return wrapper
+
+@logger
+def add(a, b):
+    return a + b
+
+add(3, 5)
+```
+
+### 📌 Example 5 — Preserving Metadata
+
+```python
+from functools import wraps
+
+def my_decorator(func):
+    @wraps(func)  # Preserves name and docstring
+    def wrapper(*args, **kwargs):
         return func(*args, **kwargs)
     return wrapper
 
-@requires_auth
-def secret_data():
-    return "Secret info!"
+@my_decorator
+def greet(name):
+    """Greets a person."""
+    print(f"Hi, {name}!")
 
-print(secret_data())  # Please login first!
+print(greet.__name__)  # greet (not wrapper!)
+print(greet.__doc__)   # Greets a person.
 ```
 
-## Common Uses
+### 📌 Example 6 — Class Decorator
 
-- **Logging** - track function calls
-- **Timing** - measure performance
-- **Authentication** - check permissions
-- **Caching** - store results
-- **Validation** - check inputs
+```python
+def singleton(cls):
+    """Ensures only one instance of a class exists."""
+    instances = {}
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return get_instance
 
-## Key Takeaways
+@singleton
+class Database:
+    def __init__(self):
+        print("Database created!")
 
-1. **Decorator** takes function, returns new function
-2. **@decorator** syntax applies it
-3. ** functools.wraps** preserves metadata
-4. **Arguments** need extra wrapper layer
-5. **Used for** - cross-cutting concerns
+db1 = Database()
+db2 = Database()
+print(db1 is db2)  # True (same instance)
+```
 
-## Practice Exercise
+---
 
-1. Create a decorator that prints before/after
-2. Create a decorator with argument
-3. Use functools.wraps properly
-4. Create an authentication decorator
+## 🧪 Practice Exercise
+
+1. Create a decorator that prints "Starting" and "Finished" around any function
+2. Create a decorator that retries a function if it fails
+3. Use `@wraps` to preserve function metadata
+4. Create a decorator that caches function results
+
+---
+
+## 📋 Key Takeaways
+
+| Concept | Takeaway |
+|---------|----------|
+| ✨ **Decorator** | Function that wraps another function |
+| 🎯 **`@` syntax** | Clean way to apply decorators |
+| 📦 **Wrapper** | Inner function that adds behavior |
+| 🔒 **`@wraps`** | Preserves original function metadata |
+| 🔄 **Arguments** | Decorators with args need 3 levels of nesting |
+
+---
+
+## 🔗 Further Reading
+
+- 📖 [Decorators — Official Docs](https://docs.python.org/3/glossary.html#term-decorator)
+- 🌟 [Primer on Decorators — Real Python](https://realpython.com/primer-on-python-decorators/)
+- 🔧 [functools.wraps — docs](https://docs.python.org/3/library/functools.html#functools.wraps)

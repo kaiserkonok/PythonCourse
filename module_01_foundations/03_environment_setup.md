@@ -1,43 +1,56 @@
-# Environment Setup: Installing Python and PyCharm
+# 🛠️ Environment Setup: Installing Python and PyCharm
 
-## Learning Objectives
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12+-blue?style=flat-square&logo=python&logoColor=ffdd54" alt="Python 3.12+">
+  <img src="https://img.shields.io/badge/IDE-PyCharm-green?style=flat-square&logo=pycharm" alt="PyCharm">
+  <img src="https://img.shields.io/badge/Time-~15%20min-yellow?style=flat-square" alt="15 min">
+</p>
 
-By the end of this lesson, you will be able to:
-
-- Install Python 3.x on your machine
-- Set up PyCharm Community Edition
-- Create your first project and run your first script
-- Understand why an IDE is worth your time
+> ### 💡 Python is the chef. PyCharm is the kitchen. Your code is the recipe.
+> Get everything set up so you can start writing Python in minutes.
 
 ---
 
-## Mental Model: Chef + Kitchen
+## 🎯 Learning Objectives
+
+By the end of this lesson, you will be able to:
+
+- ✅ Install Python 3.x on your machine
+- ✅ Set up PyCharm Community Edition
+- ✅ Create your first project and run your first script
+- ✅ Understand why an IDE is worth your time
+
+---
+
+## 🧠 Mental Model: Chef + Kitchen
 
 Think of it this way:
 
-- **Python** is the chef — it's the one who actually cooks (runs) your recipes
-- **PyCharm** is the kitchen — it gives you the tools, workspace, and convenience to write good recipes
-- **Your code** is the recipe — it tells the chef what to make
+| Role | Tool | What It Does |
+|------|------|--------------|
+| 👨‍🍳 **The Chef** | Python | Actually runs (cooks) your code |
+| 🍳 **The Kitchen** | PyCharm | Gives you tools, workspace, convenience |
+| 📝 **The Recipe** | Your Code | Tells the chef what to make |
 
 You *could* cook without a kitchen, but it would be messy. PyCharm makes writing code clean and organized.
 
 ---
 
-## Why Use an IDE?
+## 🛠️ Why Use an IDE?
 
 An IDE (Integrated Development Environment) is a program designed specifically for writing code. Here's what PyCharm gives you out of the box:
 
 | Feature | What It Does | Why It Matters |
 |---------|-------------|---------------|
-| **Syntax highlighting** | Colors your code | Makes it readable at a glance |
-| **Auto-complete** | Suggests code as you type | Saves time, prevents typos |
-| **Error detection** | Highlights mistakes before you run | Catches bugs early |
-| **One-click run** | Execute your script with one click | No terminal commands needed |
-| **Debugging** | Step through code line by line | Find and fix bugs fast |
+| 🎨 **Syntax highlighting** | Colors your code | Makes it readable at a glance |
+| 🤖 **Auto-complete** | Suggests code as you type | Saves time, prevents typos |
+| 🚨 **Error detection** | Highlights mistakes before you run | Catches bugs early |
+| ▶️ **One-click run** | Execute your script with one click | No terminal commands needed |
+| 🐛 **Debugging** | Step through code line by line | Find and fix bugs fast |
 
 ---
 
-## Step 1: Download and Install Python
+## 📥 Step 1: Download and Install Python
 
 Python is the engine that actually runs your code.
 
@@ -54,14 +67,14 @@ During installation, you will see a checkbox:
 ☐  Add python.exe to PATH
 ```
 
-**You MUST check this box.** Without it, you won't be able to run Python from the terminal.
+> 🚨 **You MUST check this box.** Without it, you won't be able to run Python from the terminal.
 
 ```
 ✅ Add Python 3.12 to PATH
    This makes Python accessible from anywhere on your computer.
 ```
 
-### Verify Python is Installed
+### 🔍 Verify Python is Installed
 
 Open a terminal (or Command Prompt on Windows) and type:
 
@@ -79,7 +92,7 @@ If you see that — you're good to go. If not, try reinstalling and make sure yo
 
 ---
 
-## Step 2: Download and Install PyCharm
+## 📥 Step 2: Download and Install PyCharm
 
 PyCharm is the IDE (code editor) you'll use to write Python.
 
@@ -92,14 +105,14 @@ PyCharm is the IDE (code editor) you'll use to write Python.
 
 | Edition | Price | Features |
 |---------|-------|----------|
-| **Community** | Free | Everything you need for this course |
-| **Professional** | $199/year | Extra tools for web development |
+| 🟢 **Community** | **Free** | Everything you need for this course |
+| 🟡 **Professional** | $199/year | Extra tools for web development |
 
-For this course, **Community is perfect**. You don't need Professional.
+> 💡 For this course, **Community is perfect**. You don't need Professional.
 
 ---
 
-## Step 3: Create Your First Project
+## 📁 Step 3: Create Your First Project
 
 1. Open PyCharm
 2. Click **New Project**
@@ -125,7 +138,7 @@ my_first_project/
 
 ---
 
-## Step 4: Run Your First Script
+## ▶️ Step 4: Run Your First Script
 
 Write this in your `hello_world.py` file:
 
@@ -147,7 +160,7 @@ Hello, World!
 
 ---
 
-## Common Mistakes
+## ⚠️ Common Mistakes
 
 ```
 ❌ Not checking "Add to PATH" during Python installation
@@ -165,9 +178,9 @@ Hello, World!
 
 ---
 
-## Code Examples
+## 💻 Code Examples
 
-### Example 1 — Your First Program
+### 📌 Example 1 — Your First Program
 
 ```python
 # This is the simplest Python program
@@ -175,7 +188,7 @@ print("Hello, World!")
 # Output: Hello, World!
 ```
 
-### Example 2 — Calculate Something
+### 📌 Example 2 — Calculate Something
 
 ```python
 # Python does the math for you
@@ -184,7 +197,7 @@ print(f"2 + 2 = {result}")
 # Output: 2 + 2 = 4
 ```
 
-### Example 3 — Use Variables
+### 📌 Example 3 — Use Variables
 
 ```python
 # Store a value and print it
@@ -193,7 +206,7 @@ print(message)
 # Output: Python is fun!
 ```
 
-### Example 4 — Multiple Prints
+### 📌 Example 4 — Multiple Prints
 
 ```python
 # Each print() goes on a new line
@@ -208,20 +221,20 @@ print("Line 3")
 
 ---
 
-## PyCharm Shortcuts Cheat Sheet
+## ⌨️ PyCharm Shortcuts Cheat Sheet
 
 | Action | Windows / Linux | Mac |
 |-------|-----------------|-----|
-| Run code | `Ctrl+Shift+F10` | `Cmd+Shift+R` |
-| Save file | `Ctrl+S` | `Cmd+S` |
-| Comment line | `Ctrl+/` | `Cmd+/` |
-| Format code | `Ctrl+Alt+L` | `Cmd+Opt+L` |
-| Find and replace | `Ctrl+R` | `Cmd+R` |
-| Go to line | `Ctrl+G` | `Cmd+G` |
+| ▶️ Run code | `Ctrl+Shift+F10` | `Cmd+Shift+R` |
+| 💾 Save file | `Ctrl+S` | `Cmd+S` |
+| 💬 Comment line | `Ctrl+/` | `Cmd+/` |
+| ✨ Format code | `Ctrl+Alt+L` | `Cmd+Opt+L` |
+| 🔍 Find and replace | `Ctrl+R` | `Cmd+R` |
+| 📍 Go to line | `Ctrl+G` | `Cmd+G` |
 
 ---
 
-## Practice Exercise
+## 🧪 Practice Exercise
 
 1. Open PyCharm
 2. Create a new Python file
@@ -232,18 +245,20 @@ print("Line 3")
 
 ---
 
-## Key Takeaways
+## 📋 Key Takeaways
 
-- **Python** is the engine — it executes your code
-- **PyCharm** is the IDE — it makes writing code easier
-- **Always check "Add to PATH"** during Python installation
-- **Run code** by right-clicking → Run or using the green ▶ button
-- **Start small** — your first program should be simple, like printing "Hello!"
+| Concept | Takeaway |
+|---------|----------|
+| 🐍 **Python** | Is the engine — it executes your code |
+| 🛠️ **PyCharm** | Is the IDE — it makes writing code easier |
+| ☑️ **Add to PATH** | Always check this during Python installation |
+| ▶️ **Run code** | By right-clicking → Run or using the green ▶ button |
+| 🚀 **Start small** | Your first program should be simple, like printing "Hello!" |
 
 ---
 
-## Further Reading
+## 🔗 Further Reading
 
-- [Python Installation Guide — Official Docs](https://docs.python.org/3/using/index.html)
-- [PyCharm Quick Start Guide](https://www.jetbrains.com/pycharm/guide/)
-- [VS Code Alternative](https://code.visualstudio.com/) — If you prefer a lighter editor
+- 📖 [Python Installation Guide — Official Docs](https://docs.python.org/3/using/index.html)
+- 🛠️ [PyCharm Quick Start Guide](https://www.jetbrains.com/pycharm/guide/)
+- 💡 [VS Code Alternative](https://code.visualstudio.com/) — If you prefer a lighter editor
