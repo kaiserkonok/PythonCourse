@@ -29,3 +29,6 @@ Thumbs.db
 *.mov
 *.pdf
 *.zip
+
+# Scratch files
+main.py
